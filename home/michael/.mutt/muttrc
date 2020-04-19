@@ -1,0 +1,63 @@
+set ssl_starttls=yes
+set ssl_force_tls=yes
+folder-hook 'account.tul' 'source ~/.mutt/account.tul' 
+folder-hook 'account.seznam' 'source ~/.mutt/account.seznam' 
+
+
+# source "~/.mutt/menu.sh |"
+
+set editor = nvim
+
+set mail_check = 30
+set mbox_type = Maildir
+set date_format = "%d/%m/%y at %I:%M%p"
+set index_format = "%2C %Z %d %-15.15F %s (%-4.4c)"
+set beep_new = yes
+set markers = no
+set mark_old = no
+set mime_forward = yes
+set wait_key = no
+set sort='reverse-date'
+
+#SIDEBAR
+# set sidebar_visible = yes
+# set sidebar_new_mail_only = yes
+# set mail_check_stats
+# set sidebar_delim_chars = '.'
+# sidebar_whitelist '~/.mutt/accountSeznam'
+
+
+#BINDINGS
+bind index g noop
+bind index G last-entry
+bind index gg first-entry
+bind index J half-down
+bind index K half-up
+bind index D delete-message
+bind index U undelete-message
+
+macro index <f2> '<sync-mailbox><enter-command>source ~/.mutt/account.tul<enter><change-folder>!<enter>'
+
+macro index <f3> '<sync-mailbox><enter-command>source ~/.mutt/account.seznam<enter><change-folder>!<enter>'
+
+macro index <f5> '<enter-command>source "offlineimap -o -q |"<enter>'
+macro index gi "<change-folder>=INBOX<enter>" "Go to inbox"
+
+auto_view text/html
+alternative_order text/plain text/enriched /text/html
+
+source ~/.mutt/mutt-colors-solarized/mutt-colors-solarized-dark-256.muttrc
+
+#THEME 
+color index yellow default '.*'
+color index_author red default '.*'
+color index_number blue default
+color index_subject cyan default '.*'
+
+# NEW EMAIL COLORS
+color index brightyellow default "~N"
+color index_author brightyellow default "~N"
+color index_subject brightyellow default "~N"
+
+#LOAD TUL account
+source ~/.mutt/account.tul

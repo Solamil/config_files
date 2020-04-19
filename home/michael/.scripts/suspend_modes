@@ -1,0 +1,23 @@
+#!/bin/bash
+interval_screenoff=1200 # 1200s 20 min in seconds
+interval_suspend=1800 # 30 min in seconds
+# expr $(xprintidle) / 1000
+
+
+while true 
+do
+	speaker_headphone=$(head -1 /proc/asound/card0/pcm0p/sub0/status)
+	speaker_extern=$(head -1 /proc/asound/card1/pcm3p/sub0/status)
+	if [[ $(expr $(xprintidle) / 1000) -eq $interval_screenoff \
+		 && $speaker_headphone = "closed" \
+		 && $speaker_extern = "closed" ]]; then
+		 sleep 1
+		 xset dpms force off
+	fi
+	if [[ $(expr $(xprintidle) / 1000) -eq $interval_suspend \
+		&& $speaker_headphone = "closed" \
+		&& $speaker_extern = "closed" ]]; then
+		sleep 1
+		systemctl suspend
+	fi
+done

@@ -1,0 +1,9 @@
+[user]
+	name =
+	email =
+[core]
+	editor = nvim
+[alias]
+	lol = log --all --graph --decorate --oneline
+[http]
+	sslVerify = true

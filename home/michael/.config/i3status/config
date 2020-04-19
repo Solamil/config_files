@@ -1,0 +1,50 @@
+general {
+	output_format = "i3bar"
+	colors = true
+	interval = 5
+}
+order += "volume master"
+order += "disk /media/michael/HardDrive"
+order += "disk /"
+order += "wireless wlp3s0"
+order += "ethernet enp2s0"
+order += "battery 0"
+order += "tztime local"
+
+wireless wlp3s0 {
+	format_up = "W: (%quality at %essid, %bitrate) %ip"
+	format_down = "W: down"
+}
+ethernet enp2s0 {
+	format_up = "E: %ip (%speed)"
+	format_down = "E: %ip (%speed) "
+}
+
+battery 0 {
+	format = "Battery: %status %percentage "
+	format_down = "No battery"
+	status_chr = "⚡ CHR"
+        status_bat = "🔋 BAT"
+        status_full = "☻ FULL"
+	path = "/sys/class/power_supply/BAT%d/uevent"
+	low_threshold = 10
+}
+tztime local {
+	format = "%d-%m-%Y %H:%M"
+
+}
+
+disk "/" {
+	format = "/ %free"
+}
+
+disk "/media/michael/HardDrive"{
+	format = "HDD: %free"
+}
+
+volume master {
+	format = "Volume: %volume"
+	format_muted = "Volume: muted (%volume)"
+	device = "default"
+	mixer = "Master"
+}

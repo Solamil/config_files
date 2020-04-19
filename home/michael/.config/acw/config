@@ -1,0 +1,92 @@
+{
+
+	"dest_repo":"/home/michael/Development/config_files",
+	"cover":{
+		"/home/example/test1/example.txt":
+		[
+			{
+				"regexp":"^example.*",
+				"replace_with":"Some example was here"
+			},
+			{
+				"regexp":".*anotherExample.*",
+				"replace_with":"<insert Another example here>"
+			}
+		],
+		"/home/michael/.mbsyncrc":
+		[
+			{
+				"regexp":"Host.*",
+				"replace_with":"<insert host imap server here>"
+			},
+			{
+				"regexp":"User.*",
+				"replace_with":"<insert user email address here>"
+			}
+		],
+		"/home/michael/.msmtprc":
+		[
+			{
+				"regexp":"from.*",
+				"replace_with":"<insert from email address here>"
+			},	
+			{
+				"regexp":"user.*",
+				"replace_with":"<insert user email address here>"
+			},
+			{
+				"regexp":"host.*",
+				"replace_with":"<insert smtp server address here>"
+			}
+		],
+		"/home/michael/.offlineimaprc":
+		[
+			{
+				"regexp":"remotehost.*",
+				"replace_with":"<insert host imap server here>"
+			},
+			{
+				"regexp":"remoteuser.*",
+				"replace_with":"<insert user email address here>"
+			}
+		],
+		"/home/michael/.mutt/account.tul":
+		[
+			{
+				"regexp":"set imap_user.*",
+				"replace_with":"set imap_user ="
+			},
+			{
+				"regexp":"set from.*",
+				"replace_with":"set from ="
+			},
+			{
+				"regexp":"set realname.*",
+				"replace_with":"set realname ="
+			},
+			{
+				"regexp":"set smtp_url.*",
+				"replace_with":"set smtp_url ="
+			}
+		],
+		"/home/michael/.mutt/account.seznam":
+		[
+			{
+				"regexp":"set imap_user.*",
+				"replace_with":"set imap_user ="
+			},
+			{
+				"regexp":"set from.*",
+				"replace_with":"set from ="
+			},
+			{
+				"regexp":"set realname.*",
+				"replace_with":"set realname ="
+			},
+			{
+				"regexp":"set smtp_url.*",
+				"replace_with":"set smtp_url ="
+			}
+		]	
+	}
+}
