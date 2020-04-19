@@ -1,0 +1,17 @@
+#!/bin/bash
+
+case $1 in
+	-home)
+		nmcli con up "Wired connection 1"
+		priority=$(sudo tail -n1 /etc/sysconfig/network-scripts/ifcfg-Wired_connection_1)
+		if [ $priority == "AUTOCONNECT_PRIORITY=-999" ]; then
+			sudo bash -c "{echo $priority} >> /etc/sysconfig/network-scripts/ifcfg-Koleje_TUL
+		fi
+		;;
+	-koleje) 
+		nmcli con up "Koleje TUL"
+		priority=$(sudo tail -n1 /etc/sysconfig/network-scripts/ifcfg-Koleje_TUL)
+		if [ $priority == "AUTOCONNECT_PRIORITY=-999" ]; then
+			sudo echo $priority >> /etc/sysconfig/network-scripts/ifcfg-Wired_connection_1
+		fi
+esac

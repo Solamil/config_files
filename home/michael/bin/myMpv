@@ -1,0 +1,2 @@
+#!/bin/bash
+mpv --sub-scale=0.5 --geometry=1100x500-900-1 $1 
