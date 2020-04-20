@@ -3,13 +3,14 @@ set from =
 set realname =
 set sendmail = "/usr/bin/msmtp -a seznam"
 set folder = '~/.mutt/accountSeznam/mail'
-set spoolfile = '~/.mutt/accountSeznam/mail/INBOX'
-# set postponed = '~/.mutt/accountTul/mail/drafts'
+set spoolfile = '~/.mutt/accountSeznam/mail/I/BOX'
+# set postponed = '~/.mutt/accountSeznam/mail/drafts'
 
 set record = '~/.mutt/accountSeznam/mail/sent'
 set header_cache = '~/.mutt/accountSeznam/cache/headers'
 set message_cachedir = '~/.mutt/accountSeznam/cache/bodies'
 
 bind index gs noop
+macro index gi "<change-folder>=I/BOX<enter>" "Go to inbox"
 macro index gs "<change-folder>=sent<enter>" "Go to sent"
 macro index gd "<change-folder>=drafts<enter>" "Go to drafts"

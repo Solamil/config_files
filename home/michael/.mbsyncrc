@@ -2,7 +2,7 @@ IMAPStore tul-remote
 <insert host imap server here>
 Port 993
 <insert user email address here>
-PassCmd "pass show Email/tul"
+#PassCmd "pass show Email/tul"
 SSLType IMAPS
 CertificateFile /etc/ssl/certs/ca-bundle.crt
 
@@ -10,7 +10,7 @@ IMAPStore seznam-remote
 <insert host imap server here>
 Port 993
 <insert user email address here>
-PassCmd "pass show Email/seznam"
+#PassCmd "pass show Email/seznam"
 SSLType IMAPS
 CertificateFile /etc/ssl/certs/ca-bundle.crt 
 
@@ -27,13 +27,15 @@ Subfolders Verbatim
 Channel tul
 Master :tul-remote:
 Slave :tul-local:
-Pattern *
-Sync All  
+Pattern * !Junk !sent !Sent\ Items !SPAM !drafts
+Create Both 
+Sync All 
 SyncState *
 
 Channel seznam
 Master :seznam-remote:
 Slave :seznam-local:
-Pattern * 
-Sync All
+Pattern * !newsletters !spam 
+Create Both 
+Sync All 
 SyncState *

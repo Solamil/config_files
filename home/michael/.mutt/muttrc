@@ -10,7 +10,7 @@ set editor = nvim
 
 set mail_check = 30
 set mbox_type = Maildir
-set date_format = "%d/%m/%y at %I:%M%p"
+set date_format = "%d/%m/%y at %H:%M"
 set index_format = "%2C %Z %d %-15.15F %s (%-4.4c)"
 set beep_new = yes
 set markers = no
@@ -40,8 +40,7 @@ macro index <f2> '<sync-mailbox><enter-command>source ~/.mutt/account.tul<enter>
 
 macro index <f3> '<sync-mailbox><enter-command>source ~/.mutt/account.seznam<enter><change-folder>!<enter>'
 
-macro index <f5> '<enter-command>source "offlineimap -o -q |"<enter>'
-macro index gi "<change-folder>=INBOX<enter>" "Go to inbox"
+macro index <f5> '<enter-command>source "mbsync -a |"<enter>'
 
 auto_view text/html
 alternative_order text/plain text/enriched /text/html

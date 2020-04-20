@@ -6,6 +6,7 @@ set sendmail = "/usr/bin/msmtp -a tul"
 set folder = '~/.mutt/accountTul/mail'
 set spoolfile = '~/.mutt/accountTul/mail/INBOX'
 set postponed = '~/.mutt/accountTul/mail/Drafts'
+set trash=+"Trash"
 
 # set record = '~/.mutt/accountTul/mail/Sent'
 set header_cache = '~/.mutt/accountTul/cache/headers'
@@ -13,5 +14,6 @@ set message_cachedir = '~/.mutt/accountTul/cache/bodies'
 
 
 bind index gs noop
+macro index gi "<change-folder>=INBOX<enter>" "Go to inbox"
 macro index gs "<change-folder>=Sent<enter>" "Go to sent"
 macro index gd "<change-folder>=Drafts<enter>" "Go to drafts"

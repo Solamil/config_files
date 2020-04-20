@@ -87,6 +87,17 @@
 				"regexp":"set smtp_url.*",
 				"replace_with":"set smtp_url ="
 			}
-		]	
+		],
+		"/home/michael/.gitconfig":
+		[
+			{
+				"regexp":"name.*",
+				"replace_with":"name ="
+			},
+			{
+				"regexp":"email.*",
+				"replace_with":"email ="
+			}
+		]
 	}
 }
