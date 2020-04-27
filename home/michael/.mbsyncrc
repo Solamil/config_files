@@ -2,7 +2,7 @@ IMAPStore tul-remote
 <insert host imap server here>
 Port 993
 <insert user email address here>
-#PassCmd "pass show Email/tul"
+PassCmd "pass show email/tul"
 SSLType IMAPS
 CertificateFile /etc/ssl/certs/ca-bundle.crt
 
@@ -10,7 +10,7 @@ IMAPStore seznam-remote
 <insert host imap server here>
 Port 993
 <insert user email address here>
-#PassCmd "pass show Email/seznam"
+PassCmd "pass show email/seznam"
 SSLType IMAPS
 CertificateFile /etc/ssl/certs/ca-bundle.crt 
 
