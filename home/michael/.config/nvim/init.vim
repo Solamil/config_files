@@ -51,10 +51,12 @@ let python_highlight_all=1
 syntax on
 
 syntax enable
-set termguicolors
+" set termguicolors 
 
 " hi Normal ctermbg=none
 " highlight NonText ctermbg=none
+let g:neosolarized_visibility = "normal"
+set background=dark
 colorscheme NeoSolarized 
 
 let NERDTreeIgnore=['\.pyc$', '\~$', '.class'] "ignore files in NERDTree
@@ -62,6 +64,31 @@ let NERDTreeIgnore=['\.pyc$', '\~$', '.class'] "ignore files in NERDTree
 set nu
 
 set clipboard=unnamed
+
+" statusline
+let g:currentmode={
+       \ 'n'  : 'NORMAL ',
+       \ 'v'  : 'VISUAL ',
+       \ 'V'  : 'V·LINE ',
+       \ '' : 'V·BLOCK ',
+       \ 'i'  : 'INSERT ',
+       \ 'R'  : 'REPLACE ',
+       \ 'Rv' : 'V·Replace ',
+       \ 'c'  : 'COMMAND ',
+       \}
+set laststatus=2
+set statusline=
+set statusline+=\ %{toupper(g:currentmode[mode()])}
+
+set statusline+=%{&modified?'[+]':''}
+set statusline+=%F
+set statusline+=%=
+set statusline+=%#CursorColumn#
+set statusline+=\ %y
+set statusline+=\ %{&fileencoding?&fileencoding:&encoding}
+set statusline+=\[%{&fileformat}\]
+set statusline+=\ %p%%
+set statusline+=\ %l:%c
 
 " Make double-<Esc> clear search highlights
 nnoremap <silent> <Esc><Esc> <Esc>:nohlsearch<CR><Esc>
