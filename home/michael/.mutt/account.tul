@@ -1,4 +1,3 @@
-set imap_user =
 set from =
 set realname =
 # set smtp_url =
@@ -8,7 +7,7 @@ set spoolfile = '~/.mutt/accountTul/mail/INBOX'
 set postponed = '~/.mutt/accountTul/mail/Drafts'
 set trash=+"Trash"
 
-# set record = '~/.mutt/accountTul/mail/Sent'
+set record = '~/.mutt/accountTul/mail/Sent'
 set header_cache = '~/.mutt/accountTul/cache/headers'
 set message_cachedir = '~/.mutt/accountTul/cache/bodies'
 

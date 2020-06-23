@@ -2,7 +2,7 @@ call plug#begin('/home/michael/.config/nvim/plugged')
 
 Plug 'tmhedberg/SimpylFold'
 Plug 'vim-scripts/indentpython.vim'
-
+Plug 'Solamil/lightline.vim'
 Plug 'vim-syntastic/syntastic'
 
 Plug 'nvie/vim-flake8'
@@ -18,14 +18,13 @@ call plug#end()
 
 set splitbelow
 set splitright
-
 " Enable folding
 set foldmethod=indent
 set foldlevel=99
 
+imapclear
 " Enable folding with the spacebar
 nnoremap <space> za
-
 
 au BufNewFile,BufRead *.py
     \ set tabstop=4 |
@@ -55,6 +54,7 @@ syntax enable
 
 " hi Normal ctermbg=none
 " highlight NonText ctermbg=none
+let g:neosolarized_contrast = "high"
 let g:neosolarized_visibility = "normal"
 set background=dark
 colorscheme NeoSolarized 
@@ -63,32 +63,39 @@ let NERDTreeIgnore=['\.pyc$', '\~$', '.class'] "ignore files in NERDTree
 
 set nu
 
-set clipboard=unnamed
+set clipboard=unnamedplus
 
 " statusline
-let g:currentmode={
-       \ 'n'  : 'NORMAL ',
-       \ 'v'  : 'VISUAL ',
-       \ 'V'  : 'V·LINE ',
-       \ '' : 'V·BLOCK ',
-       \ 'i'  : 'INSERT ',
-       \ 'R'  : 'REPLACE ',
-       \ 'Rv' : 'V·Replace ',
-       \ 'c'  : 'COMMAND ',
-       \}
-set laststatus=2
-set statusline=
-set statusline+=\ %{toupper(g:currentmode[mode()])}
+" let g:currentmode={
+"        \ 'n'  : 'NORMAL ',
+"        \ 'v'  : 'VISUAL ',
+"        \ 'V'  : 'V·LINE ',
+"        \ '' : 'V·BLOCK ',
+"        \ 'i'  : 'INSERT ',
+"        \ 'R'  : 'REPLACE ',
+"        \ 'Rv' : 'V·Replace ',
+"        \ 'c'  : 'COMMAND ',
+"        \
+set noshowmode
+set wildmode=full
 
-set statusline+=%{&modified?'[+]':''}
-set statusline+=%F
-set statusline+=%=
-set statusline+=%#CursorColumn#
-set statusline+=\ %y
-set statusline+=\ %{&fileencoding?&fileencoding:&encoding}
-set statusline+=\[%{&fileformat}\]
-set statusline+=\ %p%%
-set statusline+=\ %l:%c
+set laststatus=2
+" hi User1 ctermfg
+" set statusline=
+" set statusline+=\ %{toupper(g:currentmode[mode()])}}
+" 
+" set statusline+=%#CursorColumn#
+" set statusline+=%F
+" set statusline+=%=
+" set statusline+=%#ColorColumn#
+" 
+" set statusline+=\ %r
+" set statusline+=\ %y
+" set statusline+=\ %{&fileencoding?&fileencoding:&encoding}
+" set statusline+=\[%{&fileformat}\]
+" set statusline+=\ %p%%
+" set statusline+=\ %l:%c
 
 " Make double-<Esc> clear search highlights
 nnoremap <silent> <Esc><Esc> <Esc>:nohlsearch<CR><Esc>
+

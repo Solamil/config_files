@@ -1,16 +1,19 @@
+# Static information about the filesystems.
+# See fstab(5) for details.
 
-#
-# /etc/fstab
-# Created by anaconda on Wed Aug 28 20:07:16 2019
-#
-# Accessible filesystems, by reference, are maintained under '/dev/disk/'.
-# See man pages fstab(5), findfs(8), mount(8) and/or blkid(8) for more info.
-#
-# After editing this file, run 'systemctl daemon-reload' to update systemd
-# units generated from this file.
-#
-UUID=81aff99a-08a2-43ba-af35-5865dd8cf539 /                       ext4    defaults        1 1
-UUID=0cfdb2b7-eeab-4738-96d9-d77c36f314cd /boot                   ext4    defaults        1 2
-UUID=FC35-5A84          /boot/efi               vfat    umask=0077,shortname=winnt 0 2
-UUID=f6a17330-a89a-49dc-a7a7-b3c47d940b7f none                    swap    defaults        0 0
+# <file system> <dir> <type> <options> <dump> <pass>
+# /dev/sda7
+UUID=47b168d1-0288-4fd1-a0d2-2c2bdabb7f44	/         	ext4      	rw,relatime	0 1
+
+# /dev/sda5
+UUID=0B46-8FA7      	/boot     	vfat      	rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=iso8859-1,shortname=mixed,utf8,errors=remount-ro	0 2
+
+# /dev/sda8
+UUID=7c5f0bf1-ca50-4f05-b640-8f13c985b555	/home     	ext4      	rw,relatime	0 2
+
+# /dev/sda6
+UUID=c49ee794-b340-4715-a15e-575947f27a32	none      	swap      	defaults  	0 0
+
+# /dev/sdb2
 UUID=D8D82351D8232D66 /media/michael/HardDrive ntfs defaults 0 0
+

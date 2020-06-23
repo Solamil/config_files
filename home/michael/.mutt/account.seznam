@@ -1,4 +1,3 @@
-set imap_user =
 set from =
 set realname =
 set sendmail = "/usr/bin/msmtp -a seznam"

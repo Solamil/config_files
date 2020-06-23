@@ -6,6 +6,7 @@ general {
 order += "volume master"
 order += "disk /media/michael/HardDrive"
 order += "disk /"
+order += "disk /home"
 order += "wireless wlp3s0"
 order += "ethernet enp2s0"
 order += "battery 0"
@@ -17,7 +18,7 @@ wireless wlp3s0 {
 }
 ethernet enp2s0 {
 	format_up = "E: %ip (%speed)"
-	format_down = "E: %ip (%speed) "
+	format_down = "E: down"
 }
 
 battery 0 {
@@ -27,14 +28,15 @@ battery 0 {
         status_bat = "🔋 BAT"
         status_full = "☻ FULL"
 	path = "/sys/class/power_supply/BAT%d/uevent"
-	last_full_capacity = true
 	low_threshold = 10
 }
 tztime local {
 	format = "%d-%m-%Y %H:%M"
 
 }
-
+disk "/home"{
+	format = "/home %free"
+}
 disk "/" {
 	format = "/ %free"
 }

@@ -45,7 +45,7 @@ macro index <f5> '<enter-command>source "mbsync -a |"<enter>'
 auto_view text/html
 alternative_order text/plain text/enriched /text/html
 
-source ~/.mutt/mutt-colors-solarized/mutt-colors-solarized-dark-256.muttrc
+# source ~/.mutt/mutt-colors-solarized/mutt-colors-solarized-dark-256.muttrc
 
 #THEME 
 color index yellow default '.*'
