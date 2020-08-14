@@ -1,0 +1,7 @@
+#!/bin/sh
+file=$HOME"/.asoundrc"
+extern_speaker="hw:0,3"
+intern_speaker="hw:0,0"
+(grep -q "$extern_speaker" $file && sed -i "s/$extern_speaker/$intern_speaker/" $file) \
+|| 
+(grep -q "$intern_speaker" $file && sed -i "s/$intern_speaker/$extern_speaker/" $file) 
