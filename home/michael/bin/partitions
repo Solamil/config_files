@@ -1,5 +1,0 @@
-#!/bin/bash
-home_part_avail=$(df -H /home/ | tr "\n" " " | awk -F" " '{print $11}')
-root_part_avail=$(df -H / | tr "\n" " " | awk -F" " '{print $11}')
-data_part_avail=$(df -H /media/michael/HardDrive | tr "\n" " " | awk -F" " '{print $11}')
-echo -n "HDD: "$data_part_avail" /home "$home_part_avail" / "$root_part_avail

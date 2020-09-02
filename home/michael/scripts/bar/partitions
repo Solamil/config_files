@@ -1,0 +1,8 @@
+#!/bin/sh
+
+home_part_avail=$(btrfs filesystem usage /home | grep -Eo "Free.*[0-9]{1,3}\.[0-9]{1,3}GiB[[:blank:]]" | \
+		grep -Eo "[0-9]{1,3}\.[0-9]{1,3}GiB")
+root_part_avail=$(btrfs filesystem usage / | grep -Eo "Free.*[0-9]{1,3}\.[0-9]{1,3}GiB[[:blank:]]" | \
+		grep -Eo "[0-9]{1,3}\.[0-9]{1,3}GiB")
+data_part_avail=$(df -h /media/michael/HardDrive | tr "\n" " " | awk -F" " '{print $11}')
+echo -n "HDD: "$data_part_avail" /home "$home_part_avail" / "$root_part_avail
