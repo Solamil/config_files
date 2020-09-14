@@ -3,17 +3,16 @@
 
 # <file system> <dir> <type> <options> <dump> <pass>
 # /dev/sda7
-UUID=47b168d1-0288-4fd1-a0d2-2c2bdabb7f44	/         	ext4      	rw,relatime	0 1
+/dev/sda7           	/         	btrfs     	rw,relatime,ssd,space_cache,subvolid=5,subvol=/	0 0
 
 # /dev/sda5
-UUID=0B46-8FA7      	/boot     	vfat      	rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=iso8859-1,shortname=mixed,utf8,errors=remount-ro	0 2
+UUID=9D5D-3B9E      	/boot     	vfat      	rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=iso8859-1,shortname=mixed,utf8,errors=remount-ro	0 2
 
 # /dev/sda8
-UUID=7c5f0bf1-ca50-4f05-b640-8f13c985b555	/home     	ext4      	rw,relatime	0 2
+/dev/sda8           	/home     	btrfs     	rw,relatime,ssd,space_cache,subvolid=5,subvol=/	0 0
 
 # /dev/sda6
-UUID=c49ee794-b340-4715-a15e-575947f27a32	none      	swap      	defaults  	0 0
+UUID=121098c6-fec5-4d33-a511-31a5df649a6d	none      	swap      	defaults  	0 0
 
 # /dev/sdb2
 UUID=D8D82351D8232D66 /media/michael/HardDrive ntfs defaults 0 0
-

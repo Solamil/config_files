@@ -1,4 +1,4 @@
-#bin/sh
+#!/bin/sh
 volume=$(amixer get Master | grep -Ezo "[0-9]{2,3}%")
 mute=$(amixer get Master | grep -zo "\[off\]")
 if [[ $mute = "[off]" ]]; then

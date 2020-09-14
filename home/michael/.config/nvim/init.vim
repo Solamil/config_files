@@ -64,7 +64,7 @@ let NERDTreeIgnore=['\.pyc$', '\~$', '.class'] "ignore files in NERDTree
 set nu
 
 set clipboard=unnamedplus
-
+set path=.,$HOME/.config/**,$HOME/scripts/**,$HOME/devel/**,$HOME/docs/**
 " statusline
 " let g:currentmode={
 "        \ 'n'  : 'NORMAL ',
@@ -98,4 +98,9 @@ set laststatus=2
 
 " Make double-<Esc> clear search highlights
 nnoremap <silent> <Esc><Esc> <Esc>:nohlsearch<CR><Esc>
-
+if did_filetype()
+    finish
+endif
+if getline(1) =~# '^#!/bin/sh'
+    setfiletype sh 
+endif

@@ -1,15 +1,19 @@
-export PATH=$PATH:$HOME/bin
+export PATH=$PATH:$HOME/bin$(find $HOME/scripts/ -type d -printf ":%p")
 export EDITOR="nvim"
-export BROWSER="firefox"
+export BROWSER="qutebrowser"
+export INPUTRC=$HOME"/.config/inputrc"
+export DOTFILE_DIR=$HOME"/devel/config_files"
+export LESSHISTFILE=$HOME"/.config/less/lesshst"
+export GNUPGHOME=$HOME"/.local/share/gnupg"
+export PASSWORD_STORE_DIR=$HOME"/.local/share/password-store"
+export IMWHEELRC=$HOME"/.config/imwheel/config"
 
-
-(xrandr | grep "HDMI-1-1 disconnected" && xrandr --output eDP-1-1 --auto) || \
-(xrandr | grep "HDMI-1-1 connected" && xrandr --output HDMI-1-1 --auto && xrandr --output eDP-1-1 --off	&& xset dpms 0 0 0 && xset -dpms && xset -dpms && xset s off && setterm -balnk 0)
+(xrandr | grep "HDMI1 disconnected" && xrandr --output eDP1 --auto) || \
+(xrandr | grep "HDMI1 connected" && xrandr --output HDMI1 --auto && xrandr --output eDP1 --off	&& xset dpms 0 0 0 && xset -dpms && xset -dpms && xset s off && setterm -balnk 0)
 
 imwheel
 setterm -blength 0
 
-feh --bg-scale ~/pictures/wallpapers/current_wallpaper.jpg
+feh --no-fehbg --bg-scale ~/pics/wallpapers/current_wallpaper.jpg
 
-setxkbmap -layout "us,cz_qwerty" -option "grp:ctrl_shift_toggle"
-
+setxkbmap -layout "us,cz_qwerty"

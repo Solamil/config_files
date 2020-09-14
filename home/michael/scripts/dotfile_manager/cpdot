@@ -1,6 +1,29 @@
-#/bin/sh
-for arg in "$@"; do
-	mkdir -p $DOTFILE_DIR$(pwd)
-	cp -r $(pwd)"/"$arg $DOTFILE_DIR$(pwd)"/"
+#!/bin/sh
+cp_dot(){
+	for arg in "$@"; do
+		mkdir -p $DOTFILE_DIR$(pwd)
+		cp -r $(pwd)"/"$arg $DOTFILE_DIR$(pwd)"/"
+	done
+}
+cp_dot_reverse(){
+	for arg in "$@"; do
+		cp -r $DOTFILE_DIR$(pwd)"/"$arg $(pwd)"/"$arg
+	done 
+}
+cp_dot_all(){
+	backup_files=$(find $DOTFILE_DIR -type f | grep -v ".*git\/" | tr "\n" " ")
+	orig_files=$(echo $backup_files | cut -b $((${#DOTFILE_DIR}+1))-)
+	for file in $backup_files; do
+		orig_file=$(echo $file | cut -b $((${#DOTFILE_DIR}+1))-)
+		cp -r $orig_file $file
+	done
+}
+case "$1" in
+	-r) shift; cp_dot_reverse "$@" ;;
+	-all) cp_dot_all ;;
+	*)   cp_dot "$@" ;;
 
-done
+
+esac
+
+exit 0
