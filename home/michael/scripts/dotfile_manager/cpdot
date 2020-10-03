@@ -1,18 +1,55 @@
 #!/bin/sh
+#
+# BEGIN platform definable
+#
+
+uuid_grep(){
+	file=$1; shift
+	backup_file="$DOTFILE_DIR$(pwd)/$file"	
+	for regexp in "$@"; do
+		matched=$(grep -Eno "$regexp" $file)
+		for line in $matched; do
+			uuid=$(uuidgen)
+			uuid_line=$(echo $line |  
+			  	    sed "s/$(echo $line | grep -Eo "[0-9]*:")/$uuid":"/")
+			sed --in-place=$backup_file -E -e "s/$regexp/$uuid/" $file
+			echo $uuid_line
+		done
+	done
+}
+
+#
+# END platform definable
+#
+
+#
+# BEGIN subcommand functions
+#
+encrypt_copy(){
+	file=$1; shift
+
+	encrypt_grep=$(uuid_grep $file "$@")
+	name_file="$(pwd | cut -b 2-)/$file" 
+#	echo $encrypt_lines | pass insert --echo --force $name_file
+}
 cp_dot(){
-	for arg in "$@"; do
+	for file in "$@"; do
 		mkdir -p $DOTFILE_DIR$(pwd)
-		cp -r $(pwd)"/"$arg $DOTFILE_DIR$(pwd)"/"
+		cp -r $(pwd)"/"$file $DOTFILE_DIR$(pwd)"/"
 	done
 }
 cp_dot_reverse(){
-	for arg in "$@"; do
-		cp -r $DOTFILE_DIR$(pwd)"/"$arg $(pwd)"/"$arg
+	for file in "$@"; do
+#		if [[ -n $PASSWORD_STORE_DIR && -e "$PASSWORD_STORE_DIR$(pwd)/$file" ]]; then
+#			encrypt_grep=$( pass show $(pwd)/$file )	
+#			echo $encrypt_grep | grep -Eo 
+#		fi
+
+		cp -r $DOTFILE_DIR$(pwd)"/"$file $(pwd)"/"$file
 	done 
 }
 cp_dot_all(){
 	backup_files=$(find $DOTFILE_DIR -type f | grep -v ".*git\/" | tr "\n" " ")
-	orig_files=$(echo $backup_files | cut -b $((${#DOTFILE_DIR}+1))-)
 	for file in $backup_files; do
 		orig_file=$(echo $file | cut -b $((${#DOTFILE_DIR}+1))-)
 		cp -r $orig_file $file
@@ -20,6 +57,7 @@ cp_dot_all(){
 }
 case "$1" in
 	-r) shift; cp_dot_reverse "$@" ;;
+	-en) shift; encrypt_copy "$@" ;;
 	-all) cp_dot_all ;;
 	*)   cp_dot "$@" ;;
 
