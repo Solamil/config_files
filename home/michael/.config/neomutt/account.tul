@@ -1,0 +1,18 @@
+47c9b883-d639-46e7-a879-418da8c8ac96
+125da89e-69f1-431a-89ea-1d3349cf1c64
+# 6b948392-fd4e-4e80-8d32-aa3511046910
+set sendmail = "/usr/bin/msmtp --file=$HOME/.config/msmtp/config --logfile=$HOME/.config/msmtp/msmtp.log -a tul"
+set folder = '~/.config/neomutt/accountTul/mail'
+set spoolfile = '~/.config/neomutt/accountTul/mail/INBOX'
+set postponed = '~/.config/neomutt/accountTul/mail/Drafts'
+set trash=+"Trash"
+
+set record = '~/.config/neomutt/accountTul/mail/Sent'
+set header_cache = '~/.config/neomutt/accountTul/cache/headers'
+set message_cachedir = '~/.config/neomutt/accountTul/cache/bodies'
+
+
+bind index gs noop
+macro index gi "<change-folder>=INBOX<enter>" "Go to inbox"
+macro index gs "<change-folder>=Sent<enter>" "Go to sent"
+macro index gd "<change-folder>=Drafts<enter>" "Go to drafts"

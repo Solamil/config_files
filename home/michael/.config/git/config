@@ -1,0 +1,9 @@
+[user]
+	10f8888d-87b1-4a9a-84e4-25ea1b66d814
+	65d18878-e581-4b3d-a887-b2a64d144ed7
+[core]
+	editor = nvim
+[alias]
+	lol = log --all --graph --decorate --oneline
+[http]
+	sslVerify = true

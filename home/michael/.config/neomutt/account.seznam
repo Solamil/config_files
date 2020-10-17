@@ -1,0 +1,15 @@
+ed7a344f-4ad5-407f-80df-1dad0f5b8442
+7485fa86-4f8a-4f45-85ff-90654a04e429
+set sendmail = "/usr/bin/msmtp --file=$HOME/.config/msmtp/config --logfile=$HOME/.config/msmtp/msmtp.log -a seznam"
+set folder = '~/.config/neomutt/accountSeznam/mail'
+set spoolfile = '~/.config/neomutt/accountSeznam/mail/INBOX'
+set postponed = '~/.config/neomutt/accountSeznam/mail/drafts'
+
+set record = '~/.config/neomutt/accountSeznam/mail/sent'
+set header_cache = '~/.config/neomutt/accountSeznam/cache/headers'
+set message_cachedir = '~/.config/neomutt/accountSeznam/cache/bodies'
+
+bind index gs noop
+macro index gi "<change-folder>=INBOX<enter>" "Go to inbox"
+macro index gs "<change-folder>=sent<enter>" "Go to sent"
+macro index gd "<change-folder>=drafts<enter>" "Go to drafts"

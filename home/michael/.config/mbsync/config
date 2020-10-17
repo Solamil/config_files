@@ -1,0 +1,41 @@
+IMAPStore tul-remote
+b68cb791-ecee-4495-9594-53bcd817effe
+Port 993
+64b4d8aa-8c70-40e4-8571-4230db958776
+PassCmd "pass show email/tul"
+SSLType IMAPS
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+IMAPStore seznam-remote
+f6ceaa45-f253-43a6-aa81-250c2fd61699
+Port 993
+a927212e-0668-4a8b-8efd-90403df1094a
+PassCmd "pass show email/seznam"
+SSLType IMAPS
+CertificateFile /etc/ssl/certs/ca-certificates.crt 
+
+MaildirStore tul-local
+Path ~/.config/neomutt/accountTul/mail/
+Inbox ~/.config/neomutt/accountTul/mail/INBOX
+Subfolders Verbatim
+
+MaildirStore seznam-local
+Path ~/.config/neomutt/accountSeznam/mail/
+Inbox ~/.config/neomutt/accountSeznam/mail/INBOX
+Subfolders Verbatim
+
+Channel tul
+Master :tul-remote:
+Slave :tul-local:
+Pattern * !Junk !sent !Sent\ Items !SPAM !drafts
+Create Both 
+Sync All 
+SyncState *
+
+Channel seznam
+Master :seznam-remote:
+Slave :seznam-local:
+Pattern * !newsletters !spam 
+Create Both 
+Sync All 
+SyncState *
