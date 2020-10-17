@@ -2,8 +2,7 @@
 
 cwd=$(pwd)
 git_dir_cwd=$DOTFILE_DIR$cwd
-GIT="git --git-dir=/home/michael/devel/config_files/.git \
-	--work-tree=/home/michael/devel/config_files/"
+
 #
 # BEGIN platform definable
 #
@@ -31,12 +30,13 @@ encrypt_copy(){
 	encrypt_grep=$(uuid_grep $git_dir_cwd"/"$file "$@")
 	name_file="$(echo $cwd | cut -b 2-)/$file" 
 	echo $encrypt_grep | pass insert --echo --force $name_file
+	git -C $DOTFILE_DIR add $git_dir_cwd"/"$file
 }
 cp_dot(){
 	for file in "$@"; do
 		mkdir -p $git_dir_cwd
 		cp -r $cwd"/"$file $git_dir_cwd"/"
-		$GIT add $git_dir_cwd"/"$file
+		git -C $DOTFILE_DIR add $git_dir_cwd"/"$file
 	done
 }
 cp_dot_reverse(){
@@ -54,12 +54,30 @@ cp_dot_all(){
 	for file in $git_files; do
 		orig_file=$(echo $file | cut -b $((${#DOTFILE_DIR}+1))-)
 		cp -r $orig_file $file
+		git -C $DOTFILE_DIR add $git_dir_cwd"/"$file
 	done
 }
+cmd_copy(){
+	case "$1" in
+		-r) shift; cp_dot_reverse "$@" ;;
+		-en) shift; encrypt_copy "$@" ;;
+		all) shift; cp_dot_all ;;
+		*) cp_dot "$@" ;;
+	esac	
+}
+cmd_git(){
+	git -C $DOTFILE_DIR "$@"
+}
+cmd_ls(){
+	ls $DOTFILE_DIR"/"$cwd
+}
+#cmd_rm(){
+#}
 case "$1" in
-	-r) shift; cp_dot_reverse "$@" ;;
-	-en) shift; encrypt_copy "$@" ;;
-	-all) cp_dot_all ;;
+	copy|cp) shift;  cmd_copy "$@" ;;
+	git) shift; cmd_git "$@" ;;
+	ls) cmd_ls "$@" ;;
+	rm) cmd_rm "$@" ;;
 	*)   cp_dot "$@" ;;
 
 
