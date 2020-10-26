@@ -18,12 +18,6 @@ uuid_grep(){
 		done
 	done
 }
-#
-# END platform definable
-#
-#
-# BEGIN subcommand functions
-#
 encrypt_copy(){
 	file=$1; shift
 	cp_dot $file
@@ -33,6 +27,10 @@ encrypt_copy(){
 	git -C $DOTFILE_DIR add $git_dir_cwd"/"$file
 }
 cp_dot(){
+#	if [[ -n $PASSWORD_STORE_DIR && -e "$PASSWORD_STORE_DIR$(pwd)/$file" ]]; then
+#		encrypt_grep=$( pass show $(pwd)/$file )	
+#		echo $encrypt_grep | grep -Eo 
+#	fi
 	for file in "$@"; do
 		mkdir -p $git_dir_cwd
 		cp -r $cwd"/"$file $git_dir_cwd"/"
@@ -41,10 +39,6 @@ cp_dot(){
 }
 cp_dot_reverse(){
 	for file in "$@"; do
-#		if [[ -n $PASSWORD_STORE_DIR && -e "$PASSWORD_STORE_DIR$(pwd)/$file" ]]; then
-#			encrypt_grep=$( pass show $(pwd)/$file )	
-#			echo $encrypt_grep | grep -Eo 
-#		fi
 
 		cp -r $git_dir_cwd"/"$file $cwd"/"$file
 	done 
@@ -57,6 +51,12 @@ cp_dot_all(){
 		git -C $DOTFILE_DIR add $git_dir_cwd"/"$file
 	done
 }
+#
+# END platform definable
+#
+#
+# BEGIN subcommand functions
+#
 cmd_copy(){
 	case "$1" in
 		-r) shift; cp_dot_reverse "$@" ;;
@@ -73,6 +73,9 @@ cmd_ls(){
 }
 #cmd_rm(){
 #}
+#
+# END subcommand function
+#
 case "$1" in
 	copy|cp) shift;  cmd_copy "$@" ;;
 	git) shift; cmd_git "$@" ;;

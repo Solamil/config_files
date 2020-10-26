@@ -67,13 +67,15 @@ bindkey '^e' edit-command-line
 [ -f "$HOME/.config/aliasrc" ] && source "$HOME/.config/aliasrc"
 
 se(){
-	du -a $HOME/{devel,scripts,.config} --exclude=".git" --exclude="weap" --exclude="mail" --exclude="cache"| awk '{print $2}' | fzf | xargs -r $EDITOR
+	du -a $HOME/{devel,scripts,.config} --exclude=".git" --exclude="weap" --exclude="mail" --exclude="cache" | awk '{print $2}' | fzf | xargs -r $EDITOR
 }
 smusic(){
-	find /media/michael/HardDrive/Music/ -name "*" |  sed 's! !\\ !g' | fzf | xargs -r mpv
+	printf "%q" "$(find /media/michael/HardDrive/Music/ -name "*"  | fzf )" \
+		| xargs -r mpv
 }
 smovie(){
-	find /media/michael/HardDrive/Movies/ -name "*" |  sed 's! !\\ !g' | fzf | xargs -r mpv
+	printf "%q" "$(find /media/michael/HardDrive/Movies/ -name "*" | fzf )" \
+		| xargs -r mpv
 }
 # Load zsh-syntax-highlighting; should be last.
 # source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
