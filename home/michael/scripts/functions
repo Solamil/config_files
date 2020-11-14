@@ -1,0 +1,28 @@
+se(){
+	du -a $HOME/{dl,docs,devel,scripts,.config} \
+	--exclude=".git" --exclude="weap" --exclude="mail" --exclude="cache" \
+	| grep -v ".*pdf$\|.*png$\|.*odt$\|.*dot$" \
+	| awk '{print $2}' | fzf | xargs -r $EDITOR
+
+}
+vpnc(){
+	pass show school/vpnc > /tmp/vpnc_response.txt && \
+		vpn_cisco -s < /tmp/vpnc_response.txt
+	rm /tmp/vpnc_response.txt
+}
+vpncd(){
+	vpn_cisco -s < /home/michael/scripts/vpnc_discon.txt	
+}
+
+vpdf(){
+	printf "%q" "$(find $HOME/{dl,docs,devel} -regex ".*pdf\|.*PDF"  | fzf )" \
+		| xargs -r bzathura 
+}
+smusic(){
+	printf "%q" "$(find /media/michael/HardDrive/Music/ -name "*"  | fzf )" \
+		| xargs -r mpv
+}
+smovie(){
+	printf "%q" "$(find /media/michael/HardDrive/Movies/ -name "*" | fzf )" \
+		| xargs -r mpv
+}

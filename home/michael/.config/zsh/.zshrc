@@ -66,16 +66,6 @@ bindkey '^e' edit-command-line
 # [ -f "$HOME/.config/shortcutrc" ] && source "$HOME/.config/shortcutrc"
 [ -f "$HOME/.config/aliasrc" ] && source "$HOME/.config/aliasrc"
 
-se(){
-	du -a $HOME/{devel,scripts,.config} --exclude=".git" --exclude="weap" --exclude="mail" --exclude="cache" | awk '{print $2}' | fzf | xargs -r $EDITOR
-}
-smusic(){
-	printf "%q" "$(find /media/michael/HardDrive/Music/ -name "*"  | fzf )" \
-		| xargs -r mpv
-}
-smovie(){
-	printf "%q" "$(find /media/michael/HardDrive/Movies/ -name "*" | fzf )" \
-		| xargs -r mpv
-}
+[ -f "$HOME/scripts/functions" ] && source "$HOME/scripts/functions"
 # Load zsh-syntax-highlighting; should be last.
 # source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null

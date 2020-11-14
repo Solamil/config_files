@@ -1,0 +1,2 @@
+#!/bin/bash
+scanimage --device 'xerox_mfp:libusb:001:007' --output-file $1 --progress
