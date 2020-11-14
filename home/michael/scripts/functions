@@ -14,8 +14,16 @@ vpncd(){
 	vpn_cisco -s < /home/michael/scripts/vpnc_discon.txt	
 }
 
+vimg(){
+	printf "%q" "$(find $HOME/{pics,dl} -regex ".*jpg$\|.*png$"  | fzf )" \
+		| xargs -r sxiv
+}
+vlib(){
+	printf "%q" "$(find $HOME/{dl,docs} -regex ".*dot$\|.*odt$"  | fzf )" \
+		| (xargs -r libreoffice &)
+}
 vpdf(){
-	printf "%q" "$(find $HOME/{dl,docs,devel} -regex ".*pdf\|.*PDF"  | fzf )" \
+	printf "%q" "$(find $HOME/{dl,docs,devel} -regex ".*pdf$\|.*PDF$"  | fzf )" \
 		| xargs -r bzathura 
 }
 smusic(){
