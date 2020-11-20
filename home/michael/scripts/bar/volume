@@ -1,8 +1,8 @@
 #!/bin/sh
-volume=$(amixer get Master | grep -Ezo "[0-9]{2,3}%")
-mute=$(amixer get Master | grep -zo "\[off\]")
-if [[ $mute = "[off]" ]]; then
- 	echo -n $volume" "$mute
+volume=$(pacmd list-sinks | grep "volume:.*" | grep -o "[0-9]*%" | head -n 1)
+mute=$(pacmd list-sinks | grep "mute.*" | grep -o "yes")
+if [[ $mute = "yes" ]]; then
+ 	echo -n $volume" [off]"
 else
 	echo -n $volume
 fi
