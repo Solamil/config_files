@@ -13,12 +13,17 @@ vpnc(){
 vpncd(){
 	vpn_cisco -s < /home/michael/scripts/vpnc_discon.txt	
 }
-
+ccd(){
+	dir=$(printf "%q" "$(find .  -name ".git" -prune -false -o -type d -name "*"  | fzf )")
+	if [[ -n $dir ]]; then
+		cd $dir	
+	fi
+}
 vimg(){
 	printf "%q" "$(find $HOME/{pics,dl} -regex ".*jpg$\|.*png$"  | fzf )" \
 		| xargs -r sxiv
 }
-vlib(){
+vodt(){
 	printf "%q" "$(find $HOME/{dl,docs} -regex ".*dot$\|.*odt$"  | fzf )" \
 		| (xargs -r libreoffice &)
 }

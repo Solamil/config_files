@@ -1,7 +1,10 @@
 #!/bin/sh
-file=$HOME"/.asoundrc"
-extern_speaker="hw:0,3"
-intern_speaker="hw:0,0"
-(grep -q "$extern_speaker" $file && sed -i "s/$extern_speaker/$intern_speaker/" $file) \
-|| 
-(grep -q "$intern_speaker" $file && sed -i "s/$intern_speaker/$extern_speaker/" $file) 
+intern_sound="analog-stereo"
+extern_sound="hdmi-stereo"
+
+profile=$(pacmd list-sinks | grep "device.profile.name.*" | grep -o "$intern_sound")
+if [[ $profile == $intern_sound ]]; then
+	pacmd set-card-profile 0 output:$extern_sound
+else
+	pacmd set-card-profile 0 output:$intern_sound
+fi
