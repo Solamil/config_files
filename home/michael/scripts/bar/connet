@@ -1,11 +1,17 @@
-id_active_ethernet=$(nmcli connection show --active | grep "ethernet" | awk -F" " '{print $1}')
+#!/bin/bash
 
-if [[ $id_active_ethernet != "" ]]; then
-	ip4_ethernet=$(nmcli -g ip4.address connection show $id_active_ethernet)
-fi
+connet=""
+connection(){
+	type_con=$1
+	str=$2
 
-id_active_wifi=$(nmcli connection show --active | grep "wifi" | awk -F" " '{print $1}')
-if [[ $id_active_wifi != "" ]]; then
-	ip4_wifi=$(nmcli -g ip4.address connection show $id_active_wifi)
-fi
-echo -n "W: "$ip4_wifi" E: "$ip4_ethernet
+	id_active=$(nmcli connection show --active | grep "$type_con" | awk -F" " '{print $1}')
+	if [[ $id_active != "" ]]; then
+		ip4=$(nmcli -g ip4.address connection show $id_active)
+		connet=$connet$str$ip4
+	fi
+}
+connection "wifi" "W: "
+connection "ethernet" " E: "
+
+echo -n $connet

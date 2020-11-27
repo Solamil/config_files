@@ -1,8 +1,12 @@
 #!/bin/sh
 volume=$(pacmd list-sinks | grep "volume:.*" | grep -o "[0-9]*%" | head -n 1)
 mute=$(pacmd list-sinks | grep "mute.*" | grep -o "yes")
-if [[ $mute = "yes" ]]; then
- 	echo -n $volume" [off]"
-else
-	echo -n $volume
-fi
+
+extern_sound="hdmi-stereo"
+profile=$(pacmd list-sinks | grep "device.profile.name.*" | grep -o "$extern_sound")
+
+[[ $profile ==  $extern_sound ]] && volume=$volume" [ext]"
+
+[[ $mute = "yes" ]] && volume=$volume" [off]"
+
+echo -n $volume
