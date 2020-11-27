@@ -6,13 +6,23 @@ git_dir_cwd=$DOTFILE_DIR$cwd
 #
 # BEGIN platform definable
 #
+uuid_gen(){
+	file=$1
+	regexp=$2
 
+	if [[ -n $PASSWORD_STORE_DIR && -e "$PASSWORD_STORE_DIR$cwd/$file.gpg" ]]; then
+		passfile="$( echo $cwd | cut -b 2- )/$file"
+		encrypt_grep_list=$( pass show $passfile )	
+		
+	fi
+	uuidgen
+}
 uuid_grep(){
 	file=$1; shift
 	for regexp in "$@"; do
 		while [[ -n $(grep -Eo "$regexp" $file | head -n 1) ]]; do
 			matched=$(grep -Eo "$regexp" $file | head -n 1)	
-			uuid=$(uuidgen)
+			uuid=$(uuid_gen $file $regexp)
 			sed -i -E "/$regexp/{s/$regexp/$uuid/1; :l n; b l};" $file
 			echo $uuid":"$matched"\n"
 		done
@@ -27,13 +37,14 @@ encrypt_copy(){
 	git -C $DOTFILE_DIR add $git_dir_cwd"/"$file
 }
 cp_dot(){
-#	if [[ -n $PASSWORD_STORE_DIR && -e "$PASSWORD_STORE_DIR$(pwd)/$file" ]]; then
-#		encrypt_grep=$( pass show $(pwd)/$file )	
-#		echo $encrypt_grep | grep -Eo 
-#	fi
+	mkdir -p $git_dir_cwd
+
 	for file in "$@"; do
-		mkdir -p $git_dir_cwd
 		cp -r $cwd"/"$file $git_dir_cwd"/"
+		if [[ -n $PASSWORD_STORE_DIR && -e "$PASSWORD_STORE_DIR$cwd/$file.gpg" ]]; then
+			pass_file="$( echo $cwd | cut -b 2- )/$file"
+			encrypt_grep_list=$( pass show $pass_file )	
+		fi
 		git -C $DOTFILE_DIR add $git_dir_cwd"/"$file
 	done
 }
@@ -59,29 +70,56 @@ cp_dot_all(){
 #
 cmd_copy(){
 	case "$1" in
-		-r) shift; cp_dot_reverse "$@" ;;
-		-en) shift; encrypt_copy "$@" ;;
+		restore) shift; cp_dot_reverse "$@" ;;
+		encrypt) shift; encrypt_copy "$@" ;;
 		all) shift; cp_dot_all ;;
 		*) cp_dot "$@" ;;
 	esac	
 }
 cmd_git(){
-	git -C $DOTFILE_DIR "$@"
+	git -C $DOTFILE_DIR$cwd "$@"
 }
 cmd_ls(){
-	ls $DOTFILE_DIR"/"$cwd
+	ls $DOTFILE_DIR$cwd
+}
+cmd_status(){
+	git_files=$(find $DOTFILE_DIR -type f | grep -v ".*git\/" | tr "\n" " ")
+
+	RED='\033[1;31m'
+	GREEN='\033[0;32m'
+	NC='\033[0m' # No Color
+	for git_file in $git_files; do
+		file=$(echo $git_file | cut -b $((${#DOTFILE_DIR}+1))-)
+		if [[ -e $file ]]; then
+			(diff -q $file $git_file 1> /dev/null ) ||\
+				printf "${RED} $file\n${NC}"  
+
+			(diff -q $file $git_file 1>/dev/null ) &&\
+				printf "${GREEN} $file\n${NC}"  
+#			diff -s $file $git_file || printf "${GREEN} $file\n${NC}"
+		fi
+	done
+#	printf "I ${RED}love${GREEN} Stack Overflow\n"
 }
 #cmd_rm(){
 #}
+cmd_foo(){
+	file=$1
+#	while read -r -d "" encrypt_grep; do
+#
+#	done < <( pass show $file )
+}
 #
 # END subcommand function
 #
 case "$1" in
 	copy|cp) shift;  cmd_copy "$@" ;;
 	git) shift; cmd_git "$@" ;;
+	status) shift; cmd_status "$@" ;;
 	ls) cmd_ls "$@" ;;
 	rm) cmd_rm "$@" ;;
-	*)   cp_dot "$@" ;;
+	foo) cmd_foo "$@" ;;
+#	*)   cp_dot "$@" ;;
 
 
 esac
