@@ -14,6 +14,7 @@ Plug 'Solamil/NeoSolarized'
 Plug 'tpope/vim-fugitive'
 Plug 'jiangmiao/auto-pairs'
 Plug 'kien/ctrlp.vim'
+Plug 'morhetz/gruvbox'
 call plug#end()              
 
 set splitbelow
@@ -50,19 +51,19 @@ let python_highlight_all=1
 syntax on
 
 syntax enable
-" set termguicolors 
+"set termguicolors 
 
 " hi Normal ctermbg=none
 " highlight NonText ctermbg=none
-let g:neosolarized_contrast = "high"
+let g:neosolarized_contrast = "normal"
 let g:neosolarized_visibility = "normal"
+"set background=light
 set background=dark
-colorscheme NeoSolarized 
+colorscheme NeoSolarized
 
 let NERDTreeIgnore=['\.pyc$', '\~$', '.class'] "ignore files in NERDTree
 
 set nu
-
 set clipboard=unnamedplus
 set path=.,$HOME/.config/**,$HOME/scripts/**,$HOME/devel/**,$HOME/docs/**
 " statusline
@@ -104,3 +105,6 @@ endif
 if getline(1) =~# '^#!/bin/sh'
     setfiletype sh 
 endif
+
+" The way to exit the terminal
+tnoremap <Esc> <C-\><C-n>

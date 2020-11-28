@@ -85,20 +85,25 @@ cmd_ls(){
 cmd_status(){
 	git_files=$(find $DOTFILE_DIR -type f | grep -v ".*git\/" | tr "\n" " ")
 
-	RED='\033[1;31m'
+	modified_files=""
+	identical_files=""
+	RED='\033[0;31m'
 	GREEN='\033[0;32m'
 	NC='\033[0m' # No Color
 	for git_file in $git_files; do
 		file=$(echo $git_file | cut -b $((${#DOTFILE_DIR}+1))-)
 		if [[ -e $file ]]; then
-			(diff -q $file $git_file 1> /dev/null ) ||\
-				printf "${RED} $file\n${NC}"  
-
 			(diff -q $file $git_file 1>/dev/null ) &&\
-				printf "${GREEN} $file\n${NC}"  
+			identical_files=$identical_files"${GREEN} $file\n${NC}" &&\
+			continue
+
+			modified_files=$modified_files"${RED} $file\n${NC}"
+
 #			diff -s $file $git_file || printf "${GREEN} $file\n${NC}"
 		fi
 	done
+	printf "Identical files:\n\n$identical_files\n"
+	printf "Modified files:\n\n$modified_files\n"
 #	printf "I ${RED}love${GREEN} Stack Overflow\n"
 }
 #cmd_rm(){

@@ -15,4 +15,4 @@ UUID=9D5D-3B9E      	/boot     	vfat      	rw,relatime,fmask=0022,dmask=0022,cod
 UUID=121098c6-fec5-4d33-a511-31a5df649a6d	none      	swap      	defaults  	0 0
 
 # /dev/sdb2
-UUID=D8D82351D8232D66 /media/michael/HardDrive ntfs defaults 0 0
+UUID=D8D82351D8232D66 /media/michael/HardDrive ntfs defaults,umask=022,fmask=133,uid=1000,gid=998 0 0

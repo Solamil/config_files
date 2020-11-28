@@ -40,7 +40,7 @@ macro index <f2> '<sync-mailbox><enter-command>source $HOME/.config/neomutt/acco
 
 macro index <f3> '<sync-mailbox><enter-command>source $HOME/.config/neomutt/account.seznam<enter><change-folder>!<enter>'
 
-macro index <f5> '<enter-command>source "mbsync --config ~/.config/mbsync/config -a |"<enter>'
+macro index <f5> '<enter-command>source "mbsync --config $HOME/.config/mbsync/config -a |"<enter>'
 
 auto_view text/html
 alternative_order text/plain text/enriched /text/html

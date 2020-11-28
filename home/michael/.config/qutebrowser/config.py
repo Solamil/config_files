@@ -12,7 +12,7 @@ c.fonts.default_size = "10.5pt"
 c.scrolling.smooth = True
 c.content.autoplay = False
 # c.content.private_browsing = True
-c.completion.web_history.max_items = 1 
+c.completion.web_history.max_items = 1
 c.content.headers.user_agent = "{qutebrowser_version}"
 #c.messages.timeout
 # c.editor.command = ["nvim"]
