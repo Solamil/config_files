@@ -1,0 +1,54 @@
+#!/bin/bash
+dest="desktop"
+
+sync_desktop(){
+
+	rsync -rtvucpE --zc=zstd --zl=22 \ 
+	$HOME/./{dl/,docs/,scripts/,devel/c_school/,devel/VirtualBox\ VMs/} \
+	michael@desktop:$HOME/
+
+	rsync -rtvup --ignore-existing \
+	/media/michael/HardDrive/Movies/ \
+	michael@desktop:/media/michael/HardDrive/Movies/
+
+	rsync -rtvup --ignore-existing \
+	/media/michael/HardDrive/Music/ \
+	michael@desktop:/media/michael/HardDrive/Music/
+
+}
+
+sync_config_test(){
+
+	rsync \
+	--perms --recursive --times --relative \
+	/home/michael/./.config/systemd/user/*.service \
+	/home/michael/./scripts/ \
+	/home/michael/./.config/{inputrc,Xmodmap,xprofile,aliasrc,mailcap} \
+	/home/michael/./.config/qutebrowser/{bookmarks,config.py,quickmarks} \
+	/home/michael/./.config/msmtp/config \
+	/home/michael/./.config/git/ \
+	/home/michael/./.config/mpv/ \
+	/home/michael/./.config/newsboat/{config,urls} \
+	/home/michael/./.config/mbsync/config \
+	/home/michael/./.config/nvim/init.vim \
+	/home/michael/./.config/neomutt/ \
+	/home/michael/./.config/bash/ \
+	/home/michael/./.config/zsh/ \
+	/home/michael/./devel/c_school/
+	~/data/test-dir/ \
+	\
+}
+# rsync -rtvucp --zc=zstd --zl=22 $HOME/./{dl/,docs/,scripts/,devel/c_school/,devel/VirtualBox\ VMs/} michael@10.120.29.73:$HOME/
+# rsync -rtvup --ignore-existing /media/michael/HardDrive/Movies/ michael@10.120.29.73:/media/michael/HardDrive/Movies/
+
+# rsync -rtvup --ignore-existing /media/michael/HardDrive/Movies/ michael@10.120.29.73:/media/michael/HardDrive/Movies/
+
+sync_WD(){
+	rsync -rtvup --ignore-existing \
+	/media/michael/HardDrive/Movies/ /media/michael/FlashDrive/Filmy/
+	rsync -rtvup --ignore-existing \
+	/media/michael/FlashDrive/Filmy/ /media/michael/HardDrive/Movies/ 
+}
+
+ping $dest
+exit 0
