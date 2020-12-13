@@ -6,49 +6,50 @@ git_dir_cwd=$DOTFILE_DIR$cwd
 #
 # BEGIN platform definable
 #
-uuid_gen(){
-	file=$1
-	regexp=$2
-
-	if [[ -n $PASSWORD_STORE_DIR && -e "$PASSWORD_STORE_DIR$cwd/$file.gpg" ]]; then
-		passfile="$( echo $cwd | cut -b 2- )/$file"
-		encrypt_grep_list=$( pass show $passfile )	
-		
-	fi
-	uuidgen
-}
-uuid_grep(){
-	file=$1; shift
-	for regexp in "$@"; do
-		while [[ -n $(grep -Eo "$regexp" $file | head -n 1) ]]; do
-			matched=$(grep -Eo "$regexp" $file | head -n 1)	
-			uuid=$(uuid_gen $file $regexp)
-			sed -i -E "/$regexp/{s/$regexp/$uuid/1; :l n; b l};" $file
-			echo $uuid":"$matched"\n"
-		done
-	done
-}
-encrypt_copy(){
-	file=$1; shift
-	cp_dot $file
-	encrypt_grep=$(uuid_grep $git_dir_cwd"/"$file "$@")
-	name_file="$(echo $cwd | cut -b 2-)/$file" 
-	echo $encrypt_grep | pass insert --echo --force $name_file
-	git -C $DOTFILE_DIR add $git_dir_cwd"/"$file
-}
+# TOO COMPLICATED
+# ======================
+# uuid_gen(){
+# 	file=$1
+# 	regexp=$2
+# 
+# 	if [[ -n $PASSWORD_STORE_DIR && -e "$PASSWORD_STORE_DIR$cwd/$file.gpg" ]]; then
+# 		passfile="$( echo $cwd | cut -b 2- )/$file"
+# 		encrypt_grep_list=$( pass show $passfile )	
+# 		
+# 	fi
+# 	uuidgen
+# }
+# uuid_grep(){
+# 	file=$1; shift
+# 	for regexp in "$@"; do
+# 		while [[ -n $(grep -Eo "$regexp" $file | head -n 1) ]]; do
+# 			matched=$(grep -Eo "$regexp" $file | head -n 1)	
+# 			uuid=$(uuid_gen $file $regexp)
+# 			sed -i -E "/$regexp/{s/$regexp/$uuid/1; :l n; b l};" $file
+# 			echo $uuid":"$matched"\n"
+# 		done
+# 	done
+# }
+# encrypt_copy(){
+# 	file=$1; shift
+# 	cp_dot $file
+# 	encrypt_grep=$(uuid_grep $git_dir_cwd"/"$file "$@")
+# 	name_file="$(echo $cwd | cut -b 2-)/$file" 
+# 	echo $encrypt_grep | pass insert --echo --force $name_file
+# 	git -C $DOTFILE_DIR add $git_dir_cwd"/"$file
+# }
+# ==================
 cp_dot(){
 	mkdir -p $git_dir_cwd
-
+	
 	for file in "$@"; do
 		cp -r $cwd"/"$file $git_dir_cwd"/"
-		if [[ -n $PASSWORD_STORE_DIR && -e "$PASSWORD_STORE_DIR$cwd/$file.gpg" ]]; then
-			pass_file="$( echo $cwd | cut -b 2- )/$file"
-			encrypt_grep_list=$( pass show $pass_file )	
-		fi
+
 		git -C $DOTFILE_DIR add $git_dir_cwd"/"$file
 	done
 }
 cp_dot_reverse(){
+	
 	for file in "$@"; do
 
 		cp -r $git_dir_cwd"/"$file $cwd"/"$file
@@ -56,10 +57,10 @@ cp_dot_reverse(){
 }
 cp_dot_all(){
 	git_files=$(find $DOTFILE_DIR -type f | grep -v ".*git\/" | tr "\n" " ")
-	for file in $git_files; do
-		orig_file=$(echo $file | cut -b $((${#DOTFILE_DIR}+1))-)
-		cp -r $orig_file $file
-		git -C $DOTFILE_DIR add $git_dir_cwd"/"$file
+	for git_file in $git_files; do
+		file=$(echo $file | cut -b $((${#DOTFILE_DIR}+1))-)
+		cp -r $git_file $file 
+		git -C $DOTFILE_DIR add $git_file
 	done
 }
 #
@@ -71,8 +72,7 @@ cp_dot_all(){
 cmd_copy(){
 	case "$1" in
 		restore) shift; cp_dot_reverse "$@" ;;
-		encrypt) shift; encrypt_copy "$@" ;;
-		all) shift; cp_dot_all ;;
+		all) cp_dot_all ;;
 		*) cp_dot "$@" ;;
 	esac	
 }
@@ -87,6 +87,7 @@ cmd_status(){
 
 	modified_files=""
 	identical_files=""
+	unused_files=""
 	RED='\033[0;31m'
 	GREEN='\033[0;32m'
 	NC='\033[0m' # No Color
@@ -100,15 +101,28 @@ cmd_status(){
 			modified_files=$modified_files"${RED} $file\n${NC}"
 
 #			diff -s $file $git_file || printf "${GREEN} $file\n${NC}"
+		else
+			unused_files=$unused_files"${NC} $file\n"
 		fi
 	done
+	printf "Unused files:\n\n$unused_files\n"
 	printf "Identical files:\n\n$identical_files\n"
 	printf "Modified files:\n\n$modified_files\n"
 #	printf "I ${RED}love${GREEN} Stack Overflow\n"
 }
+cmd_match(){
+	output=$("$@")
+	file=${*: -1}
+	echo "$output"
+	echo "$output" > $git_dir_cwd"/"$file
+	
+}
 #cmd_rm(){
+#
 #}
 cmd_foo(){
+	PROGRAM="${0##*/}"
+	echo $PROGRAM
 	file=$1
 #	while read -r -d "" encrypt_grep; do
 #
@@ -120,7 +134,10 @@ cmd_foo(){
 case "$1" in
 	copy|cp) shift;  cmd_copy "$@" ;;
 	git) shift; cmd_git "$@" ;;
-	status) shift; cmd_status "$@" ;;
+	head) cmd_match "$@" ;;
+	grep) cmd_match "$@" ;;
+	tail) cmd_match "$@" ;;
+	status) cmd_status ;;
 	ls) cmd_ls "$@" ;;
 	rm) cmd_rm "$@" ;;
 	foo) cmd_foo "$@" ;;
