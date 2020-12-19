@@ -1,18 +1,9 @@
-# Static information about the filesystems.
-# See fstab(5) for details.
-
-# <file system> <dir> <type> <options> <dump> <pass>
-# /dev/sda7
-/dev/sda7           	/         	btrfs     	rw,relatime,ssd,space_cache,subvolid=5,subvol=/	0 0
-
-# /dev/sda5
-UUID=9D5D-3B9E      	/boot     	vfat      	rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=iso8859-1,shortname=mixed,utf8,errors=remount-ro	0 2
-
-# /dev/sda8
-/dev/sda8           	/home     	btrfs     	rw,relatime,ssd,space_cache,subvolid=5,subvol=/	0 0
-
-# /dev/sda6
-UUID=121098c6-fec5-4d33-a511-31a5df649a6d	none      	swap      	defaults  	0 0
-
 # /dev/sdb2
 UUID=D8D82351D8232D66 /media/michael/HardDrive ntfs defaults,umask=022,fmask=133,uid=1000,gid=998 0 0
+
+# WD ext drive
+UUID=EE6426CE6426997B /media/michael/ExtDrive ntfs defaults,umask=022,fmask=133,uid=1000,gid=998 0 0
+
+# Kingston flash drive
+UUID=BEE6-E451 /media/michael/FlashDrive vfat defaults,umask=022,fmask=133,uid=1000,gid=998 0 0
+ 
