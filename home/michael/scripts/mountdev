@@ -1,0 +1,30 @@
+#!/bin/bash
+
+mount_dev(){
+	dest_dir=$2
+	sudo mount -o umask=022,fmask=133,uid=1000,gid=998 UUID=$1 $dest_dir
+}
+mount_flash(){
+	dest_dir="/media/michael/FlashDrive"
+	kingston_name="Kingston"
+	emitec_name="Emitec"
+	kingston_uuid="BEE6-E451"
+	emitec_uuid="06D8-66EE"
+	mount_drive=$(echo -e "$kingston_name\n$emitec_name" | dmenu)
+
+	if [[ -n $mount_drive ]]; then
+		[[ $mount_drive == $kingston_name ]] && mount_dev $kingston_uuid $dest_dir
+		[[ $mount_drive == $emitec_name ]] && mount_dev $emitec_uuid $dest_dir
+	fi
+
+}
+mount_ext(){
+	dest_dir="/media/michael/ExtDrive"
+	wd_uuid="EE6426CE6426997B"
+	mount_dev $wd_uuid $dest_dir
+}
+case "$1" in
+	flash) mount_flash ;;
+	ext) mount_ext ;;
+esac
+exit 0

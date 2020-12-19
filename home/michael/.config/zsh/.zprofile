@@ -1,4 +1,4 @@
-export PATH=$PATH:$HOME/bin$(find $HOME/scripts/ -type d -printf ":%p")
+export PATH=$PATH:$HOME/bin$(find $HOME/scripts -type d -printf ":%p")
 export EDITOR="nvim"
 export BROWSER="qutebrowser"
 export INPUTRC=$HOME"/.config/inputrc"

@@ -4,7 +4,7 @@
 #
 # BEGIN platform definable
 #
-rsync_media_files(){
+rsync_media(){
 	src=$1; dst=$2
 	rsync \
 	-rtvup --ignore-existing -e ssh \
@@ -12,6 +12,7 @@ rsync_media_files(){
 }
 
 sync_remote(){
+
 	rsync \
 	-rtvucpRE --zc=zstd --zl=22 -e ssh \
 	$HOME/./{bin/,dl/,docs/,scripts/,pics/,devel/c_school/,devel/VirtualBox\ VMs/} \
@@ -42,10 +43,10 @@ sync_remote(){
 #	$HOME/./.config/zsh/ \
 #	$HOME/./devel/c_school/ \
 }
-sync_media_files(){
+sync_media(){
 	src=$1; dst=$2	
-	rsync_media_files $src $dst
-	rsync_media_files $dst $src # Syncing it back
+	rsync_media $src $dst
+	rsync_media $dst $src # Syncing it back
 }
 sync_media_remote(){
 	sync_media_files "/media/michael/HardDrive/Movies/" \
@@ -76,30 +77,32 @@ cmd_remote(){
 	esac
 }
 cmd_wd(){
-	sync_media_files "/media/michael/HardDrive/Movies/" \
-		         "/media/michael/FlashDrive/Filmy/"
+	sync_media "/media/michael/HardDrive/Movies/" \
+		   "/media/michael/ExtDrive/Filmy/"
 
-	sync_media_files "/media/michael/HardDrive/Music/" \
-			"/media/michael/FlashDrive/Music/"
+	sync_media "/media/michael/HardDrive/Music/" \
+		   "/media/michael/ExtDrive/Music/"
 }
 cmd_test(){
+	src="/home/michael/"
+	dst=$src"data/test-dir/"
 	rsync \
 	--perms --recursive --times --relative \
-	/home/michael/./.config/systemd/user/*.service \
-	/home/michael/./scripts/ \
-	/home/michael/./.config/{inputrc,Xmodmap,xprofile,aliasrc,mailcap} \
-	/home/michael/./.config/qutebrowser/{bookmarks,config.py,quickmarks} \
-	/home/michael/./.config/msmtp/config \
-	/home/michael/./.config/git/ \
-	/home/michael/./.config/mpv/ \
-	/home/michael/./.config/newsboat/{config,urls} \
-	/home/michael/./.config/mbsync/config \
-	/home/michael/./.config/nvim/init.vim \
-	/home/michael/./.config/neomutt/ \
-	/home/michael/./.config/bash/ \
-	/home/michael/./.config/zsh/ \
-	/home/michael/./devel/c_school/ \
-	~/data/test-dir/
+	$src./.config/systemd/user/*.service \
+	$src./scripts/ \
+	$src./.config/{inputrc,Xmodmap,xprofile,aliasrc,mailcap} \
+	$src./.config/qutebrowser/{bookmarks,config.py,quickmarks} \
+	$src./.config/msmtp/config \
+	$src./.config/git/ \
+	$src./.config/mpv/ \
+	$src./.config/newsboat/{config,urls} \
+	$src./.config/mbsync/config \
+	$src./.config/nvim/init.vim \
+	$src./.config/neomutt/ \
+	$src./.config/bash/ \
+	$src./.config/zsh/ \
+	$src./devel/c_school/ \
+	$dst
 }
 #
 # END subcommand functions 

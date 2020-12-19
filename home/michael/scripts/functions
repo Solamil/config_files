@@ -34,7 +34,7 @@ vpdf(){
 }
 smusic(){
 	printf "%q" "$(find /media/michael/HardDrive/Music/ -name "*"  | fzf )" \
-		| xargs -r mpv
+		| xargs -r mpv --no-audio-display
 }
 smovie(){
 	printf "%q" "$(find /media/michael/HardDrive/Movies/ -name "*" | fzf )" \
