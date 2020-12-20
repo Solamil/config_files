@@ -60,3 +60,9 @@ color index_subject brightyellow default "~N"
 
 #LOAD TUL account
 source ~/.config/neomutt/account.tul
+
+## Abook
+set query_command= "abook --datafile $HOME/.config/abook/addressbook --mutt-query '%s'"
+macro index,pager A "<enter-command>set my_pipe_decode=\$pipe_decode pipe_decode<return><pipe-message>abook --datafile $HOME/.config/abook/addressbook --add-email-quiet<return><enter-command>set pipe_decode=\$my_pipe_decode; unset my_pipe_decode<return>" "add the sender address to abook"
+# macro index,pager  a "<pipe-message>abook --add-email-quiet<return>" "Add this sender to Abook"
+bind editor        <Tab> complete-query
