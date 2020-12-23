@@ -4,20 +4,26 @@
 #
 # BEGIN platform definable
 #
-rsync_media(){
+rsync_media_remote(){
 	src=$1; dst=$2
 	rsync \
 	-rtvup --ignore-existing -e ssh \
 	$src $dst
 }
-
-sync_remote(){
+rsync_media_local(){
+	src=$1; dst=$2
+	rsync \
+	-rtvup --ignore-existing \
+	$src $dst
+}
+sync_remote_push(){
 
 	rsync \
 	-rtvucpRE --zc=zstd --zl=22 -e ssh \
 	$HOME/./{bin/,dl/,docs/,scripts/,pics/,devel/c_school/,devel/VirtualBox\ VMs/} \
 	$HOME/./.config/BraveSoftware/Brave-Browser/Default/Bookmarks \
 	$HOME/./.config/qutebrowser/{bookmarks,config.py,quickmarks} \
+	$HOME/./.config/abook/
 	$HOME/./.config/systemd/user/{*.service,*.timer} \
 	$HOME/./.config/git/ \
 	$HOME/./.config/nvim/init.vim \
@@ -43,17 +49,65 @@ sync_remote(){
 #	$HOME/./.config/zsh/ \
 #	$HOME/./devel/c_school/ \
 }
-sync_media(){
+sync_remote_pull(){
+	rsync \
+	-rtvucpRE --zc=zstd --zl=22 -e ssh \
+	$remote_dest:$HOME/./{bin/,dl/,docs/,scripts/,pics/,devel/c_school/,devel/VirtualBox\ VMs/} \
+	$remote_dest:$HOME/./.config/BraveSoftware/Brave-Browser/Default/Bookmarks \
+	$remote_dest:$HOME/./.config/qutebrowser/{bookmarks,config.py,quickmarks} \
+	$remote_dest:$HOME/./.config/abook/
+	$remote_dest:$HOME/./.config/systemd/user/{*.service,*.timer} \
+	$remote_dest:$HOME/./.config/git/ \
+	$remote_dest:$HOME/./.config/nvim/init.vim \
+	$remote_dest:$HOME/./.config/newsboat/{config,urls} \
+	$remote_dest:$HOME/./.config/zsh/{.zprofile,.zshrc} \
+	$HOME/	
+}
+sync_portable_push(){
+	dst=$1
+	rsync \
+	-rtvupRE --delete-after --ignore-existing \
+	--exclude="centos8.vdi" --exclude=".git" --exclude="$HOME/pics/wallpapers" \
+	$HOME/{bin/,dl/,docs/,scripts/,pics/,devel/c_school/,devel/VirtualBox\ VMs/} \
+	$HOME/.config/{neomutt/,xprofile,Xmodmap,gnupg/,inputrc,mbsync/config,msmtp/config} \
+	$HOME/.config/{abook/,aliasrc,fontconfig/,bash/} \
+	$HOME/.config/BraveSoftware/Brave-Browser/Default/Bookmarks \
+	$HOME/.config/qutebrowser/{bookmarks,config.py,quickmarks} \
+	$HOME/.config/systemd/user/{*.service,*.timer} \
+	$HOME/.config/git/ \
+	$HOME/.config/nvim/init.vim \
+	$HOME/.config/newsboat/{config,urls} \
+	$HOME/.config/zsh/{.zprofile,.zshrc} \
+	/etc/pulse/default.pa \
+	$dst
+#	$HOME/devel/c_school/ \
+	
+}
+
+sync_media_files_remote(){
 	src=$1; dst=$2	
-	rsync_media $src $dst
-	rsync_media $dst $src # Syncing it back
+	rsync_media_remote $src $dst
+	rsync_media_remote $dst $src # Syncing it back
+}
+sync_media_local(){
+	src=$1; dst=$2	
+	rsync_media_local $src $dst
+	rsync_media_local $dst $src # Syncing it back
 }
 sync_media_remote(){
-	sync_media_files "/media/michael/HardDrive/Movies/" \
+	sync_media_files_remote "/media/michael/HardDrive/Movies/" \
 		"$remote_dest:/media/michael/HardDrive/Movies/"
 
-	sync_media_files "/media/michael/HardDrive/Music/" \
+	sync_media_files_remote "/media/michael/HardDrive/Music/" \
 		"$remote_dest:/media/michael/HardDrive/Music/"
+}
+sync_test(){
+	dst=$1
+	rsync \
+	-rtvupRE --delete-after --ignore-existing \
+	--exclude="centos8.vdi" --exclude=".git" --exclude=".gitignore"\
+	$dst$HOME/./devel/c_school/ \
+	$HOME/
 }
 # rsync -rtvucp --zc=zstd --zl=22 $HOME/./{dl/,docs/,scripts/,devel/c_school/,devel/VirtualBox\ VMs/} michael@10.120.29.73:$HOME/
 # rsync -rtvup --ignore-existing /media/michael/HardDrive/Movies/ michael@10.120.29.73:/media/michael/HardDrive/Movies/
@@ -66,22 +120,31 @@ sync_media_remote(){
 
 #
 # BEGIN subcommand function
-#
+# 
 cmd_remote(){
 	user=$(whoami)
 	[[ $(hostname) == "lenovo" ]] && remote_host="desktop" || remote_host="lenovo"
 	remote_dest=$user"@"$remote_host
 	case "$1" in
 		media) shift; sync_media_remote;;
-		files) shift; sync_remote ;;
+		files) shift; sync_remote_push ;;
 	esac
 }
 cmd_wd(){
-	sync_media "/media/michael/HardDrive/Movies/" \
-		   "/media/michael/ExtDrive/Filmy/"
+	sync_media_local "/media/michael/HardDrive/Movies/" \
+			   "/media/michael/ExtDrive/Filmy/"
 
-	sync_media "/media/michael/HardDrive/Music/" \
-		   "/media/michael/ExtDrive/Music/"
+	sync_media_local "/media/michael/HardDrive/Music/" \
+			   "/media/michael/ExtDrive/Music/"
+}
+cmd_portable(){
+#	dst="/media/michael/FlashDrive/portable-home/"$(hostname)"/"
+	dst="/media/michael/HardDrive/portable-home/"$(hostname)"/"
+	mkdir -p $dst
+	sync_portable $dst
+#	sync_test $dst
+	
+
 }
 cmd_test(){
 	src="/home/michael/"
@@ -103,6 +166,7 @@ cmd_test(){
 	$src./.config/zsh/ \
 	$src./devel/c_school/ \
 	$dst
+
 }
 #
 # END subcommand functions 
@@ -110,6 +174,7 @@ cmd_test(){
 case "$1" in
 	remote) shift; cmd_remote "$@" ;;
 	wd) shift; cmd_wd "$@" ;;
+	portable) shift; cmd_portable "$@" ;;
 	test) shift; cmd_test "$@" ;;
 #	*)   cp_dot "$@" ;;
 
