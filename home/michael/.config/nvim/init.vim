@@ -15,6 +15,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'jiangmiao/auto-pairs'
 Plug 'kien/ctrlp.vim'
 Plug 'morhetz/gruvbox'
+Plug 'tomlion/vim-solidity'
 call plug#end()              
 
 set splitbelow
@@ -108,3 +109,4 @@ endif
 
 " The way to exit the terminal
 tnoremap <Esc> <C-\><C-n>
+let g:syntastic_solidity_checkers = ['solc']
