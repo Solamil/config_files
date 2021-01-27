@@ -1,0 +1,21 @@
+#!/bin/sh
+start_node(){
+	port=$1; http_port=$2; node=$3
+	geth \
+	--ethash.dagdir ~/.local/geth/ethash \
+	--datadir ~/.local/geth/$node \
+	--networkid 2072 \
+	--port $port \
+	--nodiscover \
+	--http \
+	--http.addr 127.0.0.1 \
+	--http.port $http_port \
+	--allow-insecure-unlock \
+	--ipcpath ~/.local/geth/$node/geth.ipc \
+	--verbosity 3
+}
+case "$1" in
+	1) start_node 30304 8504 "node1" ;;
+	2) start_node 30305 8505 "node2" ;;
+esac
+exit 0

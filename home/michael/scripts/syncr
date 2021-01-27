@@ -46,7 +46,7 @@ rsync_remote_files(){
 	$dst/	
 }
 rsync_portable(){
-	src=$1; dst=$2
+	src=$1; dst=$2; dev=$3
 	rsync \
 	-rtvupRE --delete-after --ignore-existing \
 	--exclude="centos8.vdi" --exclude=".git" --exclude="$HOME/pics/wallpapers" \
@@ -62,25 +62,25 @@ rsync_portable(){
 	$src/.config/newsboat/{config,urls} \
 	$src/.config/zsh/{.zprofile,.zshrc} \
 	/etc/pulse/default.pa \
-	$dst
+	$dst/$dev/
 #	$HOME/devel/c_school/ \
 	
 }
 rsync_portable_pull(){
-	src=$1; dst=$2
+	src=$1; dst=$2; dev=$3
 	rsync \
 	-rtvupRE --ignore-existing \
 	--exclude="centos8.vdi" --exclude=".git" --exclude="$HOME/pics/wallpapers" \
-	$src/./{dl/,docs/,scripts/,pics/,devel/c_school/,devel/VirtualBox\ VMs/} \
-	$src/./.config/{neomutt/,xprofile,Xmodmap,gnupg/,inputrc,mbsync/config,msmtp/config} \
-	$src/./.config/{abook/,aliasrc,fontconfig/,bash/,installed.txt} \
-	$src/./.config/BraveSoftware/Brave-Browser/Default/Bookmarks \
-	$src/./.config/qutebrowser/{bookmarks,config.py,quickmarks} \
-	$src/./.config/systemd/user/{*.service,*.timer} \
-	$src/./.config/git/ \
-	$src/./.config/nvim/ \
-	$src/./.config/newsboat/{config,urls} \
-	$src/./.config/zsh/{.zprofile,.zshrc} \
+	$src/$dev/./{dl/,docs/,scripts/,pics/,devel/c_school/,devel/VirtualBox\ VMs/} \
+	$src/$dev/./.config/{neomutt/,xprofile,Xmodmap,gnupg/,inputrc,mbsync/config,msmtp/config} \
+	$src/$dev/./.config/{abook/,aliasrc,fontconfig/,bash/,installed.txt} \
+	$src/$dev/./.config/BraveSoftware/Brave-Browser/Default/Bookmarks \
+	$src/$dev/./.config/qutebrowser/{bookmarks,config.py,quickmarks} \
+	$src/$dev/./.config/systemd/user/{*.service,*.timer} \
+	$src/$dev/./.config/git/ \
+	$src/$dev/./.config/nvim/ \
+	$src/$dev/./.config/newsboat/{config,urls} \
+	$src/$dev/./.config/zsh/{.zprofile,.zshrc} \
 	$dst
 #	$HOME/devel/c_school/ \
 	
@@ -145,11 +145,11 @@ cmd_portable(){
 	dst_flash="/media/michael/FlashDrive/portable-home/"$(hostname)
 	dst_hard="/media/michael/HardDrive/portable-home/"$(hostname)
 	mkdir -p $dst_flash
-	rsync_portable "$HOME" "$dst_hard"
-	rsync_portable_pull "$dst_hard$HOME" "$HOME"
+	rsync_portable "$HOME" "$dst_hard" "$HOSTNAME" 
+	rsync_portable_pull "$dst_hard$HOME" "$HOME" "$HOSTNAME" 
 	
-	rsync_portable "$HOME" "$dst_flash"
-	rsync_portable_pull "$dst_flash$HOME" "$HOME"
+	rsync_portable "$HOME" "$dst_flash" "$HOSTNAME"
+	rsync_portable_pull "$dst_flash$HOME" "$HOME" "$HOSTNAME"
 
 }
 cmd_test(){

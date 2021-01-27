@@ -1,17 +1,29 @@
 se(){
-	du -a $HOME/{dl,docs,devel,scripts,.config} \
+	du -a $HOME/{dl,docs,devel,scripts,.config,.local} \
 	--exclude=".git" --exclude="weap" --exclude="mail" --exclude="cache" \
 	| grep -v ".*pdf$\|.*png$\|.*odt$\|.*\.dot$" \
 	| awk '{print $2}' | fzf | xargs -r $EDITOR
 
 }
+# VPN connect
 vpnc(){
 	pass show school/vpnc > /tmp/vpnc_response.txt && \
 		vpn_cisco -s < /tmp/vpnc_response.txt
 	rm /tmp/vpnc_response.txt
 }
-vpncd(){
-	vpn_cisco -s < /home/michael/scripts/vpnc_discon.txt	
+# VPN disconnect
+vpnd(){
+	vpn_cisco disconnect
+}
+# VPN status
+vpns(){
+	vpn_cisco state
+}
+mntphone(){
+	go-mtpfs $HOME/phone/ &
+}
+umntphone(){
+	fusermount -u $HOME/phone/
 }
 ccd(){
 	dir=$(printf "%q" "$(find .  -name ".git" -prune -false -o -type d -name "*"  | fzf )")
@@ -21,7 +33,7 @@ ccd(){
 	fi
 }
 vimg(){
-	printf "%q" "$(find $HOME/{pics,dl} -regex ".*jpg$\|.*png$"  | fzf )" \
+	printf "%q" "$(find $HOME/{pics,dl,docs} -regex ".*jpg$\|.*png$"  | fzf )" \
 		| xargs -r sxiv
 }
 vodt(){
