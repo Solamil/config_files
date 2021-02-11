@@ -1,2 +1,2 @@
 #!/bin/bash
-scanimage --device 'xerox_mfp:libusb:001:007' --output-file $1 --progress
+scanimage --device 'smfp:usb;04e8;3469;ZF44B8KH3C01MYN' --output-file $1 --progress

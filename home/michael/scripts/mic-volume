@@ -1,0 +1,8 @@
+#!/bin/sh
+n_line=$(pacmd list-sources | grep -n "\*" | grep -o "[0-9]*" | head -n 1)
+
+volume=$(pacmd list-sources | head -n $(($n_line+7)) | tail -n 1 | grep -o "[0-9]*%" \
+						     | head -n 1 | grep -o "[0-9]*") 
+
+volume=$(($volume$1))
+pactl set-source-volume @DEFAULT_SOURCE@ $volume 0%
