@@ -13,9 +13,13 @@ c.scrolling.smooth = True
 c.content.autoplay = False
 # c.content.private_browsing = True
 c.completion.web_history.max_items = 1
-c.content.headers.user_agent = "{qutebrowser_version}"
+c.content.headers.user_agent = "{upstream_browser_key}"
 #c.messages.timeout
+
+config.load_autoconfig()
 # c.editor.command = ["nvim"]
 # config.unbind('<Ctrl-v>', mode='normal')
 config.bind(',M', 'spawn mpv {url}')
 config.bind(',m', 'hint links spawn mpv {hint-url}')
+config.bind(',p', 'spawn --userscript neo-qute-pass --no-insert-mode')
+config.bind(',P', 'spawn --userscript neo-qute-pass --choose --no-insert-mode')

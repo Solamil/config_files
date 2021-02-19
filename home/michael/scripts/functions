@@ -1,13 +1,14 @@
 se(){
-	du -a $HOME/{dl,docs,devel,scripts,.config,.local} \
+	du -a $HOME/{dl,docs,devel,scripts,.config,.local/share/geth} \
 	--exclude=".git" --exclude="weap" --exclude="mail" --exclude="cache" \
+	--exclude="yay" \
 	| grep -v ".*pdf$\|.*png$\|.*odt$\|.*\.dot$" \
 	| awk '{print $2}' | fzf | xargs -r $EDITOR
 
 }
 # VPN connect
 vpnc(){
-	pass show school/vpnc > /tmp/vpnc_response.txt && \
+	pass show school/vpnc_cert > /tmp/vpnc_response.txt && \
 		vpn_cisco -s < /tmp/vpnc_response.txt
 	rm /tmp/vpnc_response.txt
 }
@@ -24,13 +25,6 @@ mntphone(){
 }
 umntphone(){
 	fusermount -u $HOME/phone/
-}
-ccd(){
-	dir=$(printf "%q" "$(find .  -name ".git" -prune -false -o -type d -name "*"  | fzf )")
-	if [[ -n $dir ]]; then
-		echo $dir
-		cd $dir	
-	fi
 }
 vimg(){
 	printf "%q" "$(find $HOME/{pics,dl,docs} -regex ".*jpg$\|.*png$"  | fzf )" \
