@@ -1,12 +1,17 @@
 #!/bin/sh
-volume=$(pacmd list-sinks | grep "volume:.*" | grep -o "[0-9]*%" | head -n 1)
-mute=$(pacmd list-sinks | grep "mute.*" | grep -o "yes")
+
+list_sinks=$(pacmd list-sinks)
+list_sources=$(pacmd list-sources)
+
+volume=$(echo "$list_sinks" | grep "volume:.*" | grep -o "[0-9]*%" | head -n 1)
+mute=$(echo "$list_sinks" | grep "mute.*" | grep -o "yes")
+mute_source=$(echo "$list_sources" | grep "mute.*" | tail -n 1 | grep -o "no")
 
 extern_sound="hdmi-stereo"
-profile=$(pacmd list-sinks | grep "device.profile.name.*" | grep -o "$extern_sound")
+profile=$(echo "$list_sinks" | grep "device.profile.name.*" | grep -o "$extern_sound")
 
 [[ $profile ==  $extern_sound ]] && volume=$volume" [ext]"
-
+[[ $mute_source == "no" ]] && volume=$volume" Mic: on"
 [[ $mute = "yes" ]] && volume=$volume" [off]"
 
 echo -n $volume
