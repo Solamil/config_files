@@ -1,0 +1,2 @@
+set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
+source ~/.config/nvim/init.vim

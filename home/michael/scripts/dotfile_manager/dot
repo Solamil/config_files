@@ -120,9 +120,9 @@ cmd_match(){
 	echo "$output" > $git_dir_cwd"/"$file
 	
 }
-#cmd_rm(){
-#
-#}
+cmd_rm(){
+	rm $DOTFILE_DIR$cwd/$1 
+}
 cmd_foo(){
 	PROGRAM="${0##*/}"
 	echo $PROGRAM
@@ -137,13 +137,13 @@ cmd_foo(){
 case "$1" in
 	add|cp) shift;  cmd_copy "$@" ;;
 	git) shift; cmd_git "$@" ;;
+	rm) shift; cmd_rm "$@" ;;
 	head) cmd_match "$@" ;;
 	grep) cmd_match "$@" ;;
 	tail) cmd_match "$@" ;;
 	awk) cmd_match "$@" ;;
 	status) cmd_status ;;
 	ls) cmd_ls "$@" ;;
-	rm) cmd_rm "$@" ;;
 	foo) cmd_foo "$@" ;;
 #	*)   cp_dot "$@" ;;
 

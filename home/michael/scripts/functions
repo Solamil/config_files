@@ -8,7 +8,7 @@ se(){
 }
 # VPN connect
 vpnc(){
-	pass show school/vpnc_cert > /tmp/vpnc_response.txt && \
+	pass show school/vpnc > /tmp/vpnc_response.txt && \
 		vpn_cisco -s < /tmp/vpnc_response.txt
 	rm /tmp/vpnc_response.txt
 }

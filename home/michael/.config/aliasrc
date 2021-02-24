@@ -8,3 +8,5 @@ alias git-acw="git --git-dir=/home/michael/devel/config_files/.git \
 	--work-tree=/home/michael/devel/config_files/"
 alias abook='abook --datafile $HOME/.config/abook/addressbook'
 alias gethdir='cd $HOME/.local/share/geth'
+# alias for vim not necessary
+# alias vim='vim -u "$XDG_CONFIG_HOME/vim/vimrc"'

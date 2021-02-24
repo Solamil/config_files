@@ -4,8 +4,8 @@
 # rsync -rtvup --ignore-existing /media/michael/HardDrive/Movies/ michael@10.120.29.73:/media/michael/HardDrive/Movies/
 
 # rsync -rtvup --ignore-existing /media/michael/HardDrive/Movies/ michael@10.120.29.73:/media/michael/HardDrive/Movies/
-
-# pacman -Qqe >> $HOME/.config/installed.txt
+# sudo rsync michael@lenovo:/usr/share/qutebrowser/userscripts/neo-qute-pass .
+#
 # BEGIN platform definable
 #
 
@@ -24,15 +24,35 @@ rsync_local_media(){
 	-rtvup --ignore-existing \
 	$src $dst
 }
+
+rsync_remote_files_del_after(){
+	src=$1; dst=$2
+	rsync \
+	-rtvucpRE --delete-after \
+	--zc=zstd --zl=22 -e ssh \
+	--exclude=".git/*" \
+	--exclude="bar/volume" \
+	--exclude="bar/battery" \
+	--exclude="scripts/hdmi-sound" \
+	--exclude="*.o" \
+	$src/./{dl/,docs/,scripts/,pics/} \
+	$src/./devel/{dwm/,c_school/} \
+	$dst/
+
+#	/etc/pulse/default.pa \
+}
 rsync_remote_files(){
 	src=$1; dst=$2
 	rsync \
-	-rtvucpRE --zc=zstd --delete-after --zl=22 -e ssh \
-	--exclude=".git" \
+	-rtvucpRE \
+	--zc=zstd --zl=22 -e ssh \
+	--exclude=".git/*" \
 	--exclude="bar/volume" \
 	--exclude="bar/battery" \
 	--exclude="nvim/plugged/*" \
-	$src/./{dl/,docs/,scripts/,pics/,devel/c_school/} \
+	--exclude="scripts/hdmi-sound" \
+	--exclude="accountTul/mail/*" \
+	--exclude="accountSeznam/mail/*" \
 	$src/./.config/{neomutt/,xprofile,Xmodmap,gnupg/,inputrc,mbsync/config,msmtp/config} \
 	$src/./.config/{abook/,aliasrc,fontconfig/,bash/,installed.txt} \
 	$src/./.local/share/{password-store/,geth/} \
@@ -41,6 +61,7 @@ rsync_remote_files(){
 	$src/./.config/systemd/user/{*.service,*.timer} \
 	$src/./.config/git/ \
 	$src/./.config/nvim/ \
+	$src/./.local/share/newsboat/cache.db \
 	$src/./.config/newsboat/{config,urls} \
 	$src/./.config/zsh/{.zprofile,.zshrc} \
 	$dst/
@@ -52,10 +73,8 @@ rsync_portable(){
 	src=$1; dst=$2
 	rsync \
 	-rtvuRE --delete-after --ignore-existing \
-	--exclude="centos8.vdi" \
-	--exclude=".git" \
-	--exclude="$HOME/pics/wallpapers" \
-	$src/{dl/,docs/,scripts/,pics/,devel/c_school/} \
+	--exclude="centos8.vdi" --exclude=".git" --exclude="$HOME/pics/wallpapers" \
+	$src/{dl/,docs/,scripts/,pics/,devel/c_school/,devel/VirtualBox\ VMs/} \
 	$src/.config/{neomutt/,xprofile,Xmodmap,gnupg/,inputrc,mbsync/config,msmtp/config} \
 	$src/.config/{abook/,aliasrc,fontconfig/,bash/} \
 	$src/.config/BraveSoftware/Brave-Browser/Default/Bookmarks \
@@ -65,7 +84,6 @@ rsync_portable(){
 	$src/.config/nvim/ \
 	$src/.config/newsboat/{config,urls} \
 	$src/.config/zsh/{.zprofile,.zshrc} \
-	/usr/share/qutebrowser/userscripts/neo-qute-pass \
 	/etc/pulse/default.pa \
 	$dst
 #	$HOME/devel/c_school/ \
@@ -108,8 +126,8 @@ sync_remote_media(){
 	rsync_remote_media $dst $src # Syncing it back
 }
 sync_remote_files(){
-	rsync_remote_files "$remote_dest:$HOME" "$HOME" #Syncing it back
-	rsync_remote_files "$HOME" "$remote_dest:$HOME"
+	rsync_remote_files "$remote_dest:$HOME" "$HOME" 
+	rsync_remote_files "$HOME" "$remote_dest:$HOME" #Syncing it back
 }
 sync_remote_media_files(){
 	sync_remote_media "/media/michael/HardDrive/Movies/" \
@@ -118,6 +136,7 @@ sync_remote_media_files(){
 	sync_remote_media "/media/michael/HardDrive/Music/" \
 		"$remote_dest:/media/michael/HardDrive/Music/"
 }
+
 #
 # END sync functions
 #
@@ -131,9 +150,9 @@ sync_remote_media_files(){
 # 
 cmd_remote(){
 	user=$(whoami)
-	[[ $(cat /etc/hostname) == "lenovo" ]] && remote_host="desktop" || remote_host="lenovo"
-	remote_dest=$user"@"$remote_host
-
+	[[ $HOST == "lenovo" ]] && remote_host="desktop" || remote_host="lenovo"
+#	remote_dest=$user"@"$remote_host
+	remote_dest=$user"@lenovo"
 	case "$1" in
 		media) shift; sync_remote_media_files ;;
 		files) shift; sync_remote_files ;;
@@ -147,12 +166,12 @@ cmd_wd(){
 			   "/media/michael/ExtDrive/Music/"
 }
 cmd_portable(){
-	dst_flash="/media/michael/FlashDrive/portable-home/"$(cat /etc/hostname)
-	dst_hard="/media/michael/HardDrive/portable-home/"$(cat /etc/hostname)
+	dst_flash="/media/michael/FlashDrive/portable-home/"$(hostname)
+	dst_hard="/media/michael/HardDrive/portable-home/"$(hostname)
 	mkdir -p $dst_hard
 	mkdir -p $dst_flash
-	rsync_portable "$HOME" "$dst_hard"
-	rsync_portable_pull "$dst_hard$HOME" "$HOME"
+#	rsync_portable "$HOME" "$dst_hard"
+#	rsync_portable_pull "$dst_hard$HOME" "$HOME"
 	
 	rsync_portable "$HOME" "$dst_flash"
 	rsync_portable_pull "$dst_flash$HOME" "$HOME"
@@ -180,6 +199,11 @@ cmd_test(){
 	$dst
 
 }
+cmd_rsync(){
+	rsync \
+	-rtvucpRE --zc=zstd --zl=22 -e ssh \
+	"$@"
+}
 #
 # END subcommand functions 
 #
@@ -188,7 +212,7 @@ case "$1" in
 	wd) shift; cmd_wd "$@" ;;
 	portable) shift; cmd_portable "$@" ;;
 	test) shift; cmd_test "$@" ;;
-#	*)   cp_dot "$@" ;;
+	*)   cmd_rsync "$@" ;;
 
 
 esac
