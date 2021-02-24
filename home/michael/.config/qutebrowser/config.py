@@ -17,8 +17,20 @@ c.content.headers.user_agent = "{upstream_browser_key}"
 #c.messages.timeout
 
 config.load_autoconfig()
+# undo, scroll-page 0 -0.5 Ctrl-U
+# tab-close -o, scroll-page 0 0.5 Ctrl-D
 # c.editor.command = ["nvim"]
 # config.unbind('<Ctrl-v>', mode='normal')
+config.unbind('<Ctrl-d>', mode='normal')
+config.unbind('<Ctrl-u>', mode='normal')
+config.unbind('d', mode='normal')
+config.unbind('u', mode='normal')
+
+config.bind('d', 'scroll-page 0 0.5');
+config.bind('u', 'scroll-page 0 -0.5');
+config.bind('<Ctrl-u>', 'undo');
+config.bind('<Ctrl-d>', 'tab-close -o');
+
 config.bind(',M', 'spawn mpv {url}')
 config.bind(',m', 'hint links spawn mpv {hint-url}')
 config.bind(',p', 'spawn --userscript neo-qute-pass --no-insert-mode')
