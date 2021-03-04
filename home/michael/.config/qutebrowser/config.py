@@ -3,7 +3,7 @@ c.url.searchengines = {'DEFAULT': 'https://searx.tuxcloud.net/?q={}',
                        'ddg': 'https://duckduckgo.com/?q={}',
                        'aw': 'https://wiki.archlinux.org/index.php?search={}'}
 c.url.default_page = 'https://searx.tuxcloud.net'
-c.fonts.default_family = "Serif Tangut"
+c.fonts.default_family = "serif tangut"
 c.url.start_pages = c.url.default_page
 c.content.geolocation = False 
 c.content.notifications = False
@@ -21,15 +21,15 @@ config.load_autoconfig()
 # tab-close -o, scroll-page 0 0.5 Ctrl-D
 # c.editor.command = ["nvim"]
 # config.unbind('<Ctrl-v>', mode='normal')
-config.unbind('<Ctrl-d>', mode='normal')
-config.unbind('<Ctrl-u>', mode='normal')
-config.unbind('d', mode='normal')
-config.unbind('u', mode='normal')
+#config.unbind('<Ctrl-d>', mode='normal')
+#config.unbind('<Ctrl-u>', mode='normal')
+#config.unbind('d', mode='normal')
+#config.unbind('u', mode='normal')
 
-config.bind('d', 'scroll-page 0 0.5');
-config.bind('u', 'scroll-page 0 -0.5');
-config.bind('<Ctrl-u>', 'undo');
-config.bind('<Ctrl-d>', 'tab-close -o');
+#config.bind('d', 'scroll-page 0 0.5');
+#config.bind('u', 'scroll-page 0 -0.5');
+#config.bind('<Ctrl-u>', 'undo');
+#config.bind('<Ctrl-d>', 'tab-close -o');
 
 config.bind(',M', 'spawn mpv {url}')
 config.bind(',m', 'hint links spawn mpv {hint-url}')

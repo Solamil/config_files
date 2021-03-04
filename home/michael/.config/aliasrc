@@ -10,3 +10,10 @@ alias abook='abook --datafile $HOME/.config/abook/addressbook'
 alias gethdir='cd $HOME/.local/share/geth'
 # alias for vim not necessary
 # alias vim='vim -u "$XDG_CONFIG_HOME/vim/vimrc"'
+alias tube='straw-viewer'
+
+alias matlab='env _JAVA_AWT_WM_NONREPARENTING=1 \
+	 LD_PRELOAD=/usr/lib/libstdc++.so \
+	 LD_LIBRARY_PATH=/usr/lib/xorg/modules/dri/ \
+	 MESA_LOADER_DRIVER_OVERRIDE=i965 \
+		matlab'

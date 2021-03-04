@@ -16,6 +16,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'kien/ctrlp.vim'
 Plug 'morhetz/gruvbox'
 Plug 'tomlion/vim-solidity'
+Plug 'dgraham/vim-eslint'
 call plug#end()              
 
 set splitbelow
@@ -38,20 +39,18 @@ au BufNewFile,BufRead *.py
     \ set fileformat=unix
 
 au BufNewFile,BufRead *.js
-    \ set tabstop=2 |
-    \ set softtabstop=2 |
-    \ set shiftwidth=2
+    \ set tabstop=4 |
+    \ set softtabstop=4 |
+    \ set shiftwidth=4
 
 "Flagging Unnecessary Whitespace
 highlight BadWhitespace ctermbg=red guibg=darkred
 au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 set encoding=utf-8
 
+syntax on 
 
 let python_highlight_all=1
-syntax on
-
-syntax enable
 "set termguicolors 
 
 " hi Normal ctermbg=none
@@ -110,3 +109,9 @@ endif
 " The way to exit the terminal
 tnoremap <Esc> <C-\><C-n>
 let g:syntastic_solidity_checkers = ['solc']
+let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_javascript_exec='/home/michael/.local/share/npm/bin/eslint'
+
+filetype off " <<< this line
+filetype plugin indent on
+syntax on

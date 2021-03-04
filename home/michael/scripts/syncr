@@ -36,7 +36,7 @@ rsync_remote_files_del_after(){
 	--exclude="scripts/hdmi-sound" \
 	--exclude="*.o" \
 	$src/./{dl/,docs/,scripts/,pics/} \
-	$src/./devel/{dwm/,c_school/} \
+	$src/./devel/{dwm/,c_school/,mt/} \
 	$dst/
 
 #	/etc/pulse/default.pa \
@@ -53,7 +53,7 @@ rsync_remote_files(){
 	--exclude="scripts/hdmi-sound" \
 	--exclude="accountTul/mail/*" \
 	--exclude="accountSeznam/mail/*" \
-	$src/./.config/{neomutt/,xprofile,Xmodmap,gnupg/,inputrc,mbsync/config,msmtp/config} \
+	$src/./.config/{neomutt/,Xmodmap,gnupg/,inputrc,mbsync/config,msmtp/config} \
 	$src/./.config/{abook/,aliasrc,fontconfig/,bash/,installed.txt} \
 	$src/./.local/share/{password-store/,geth/} \
 	$src/./.config/BraveSoftware/Brave-Browser/Default/Bookmarks \
@@ -126,8 +126,8 @@ sync_remote_media(){
 	rsync_remote_media $dst $src # Syncing it back
 }
 sync_remote_files(){
-	rsync_remote_files "$remote_dest:$HOME" "$HOME" 
-	rsync_remote_files "$HOME" "$remote_dest:$HOME" #Syncing it back
+	rsync_remote_files_del_after "$remote_dest:$HOME" "$HOME" 
+	rsync_remote_files_del_after "$HOME" "$remote_dest:$HOME" #Syncing it back
 }
 sync_remote_media_files(){
 	sync_remote_media "/media/michael/HardDrive/Movies/" \
